@@ -5,10 +5,21 @@ import BorderIcon from '../assets/img/svg/border.svg';
 import ChickyEmpaque from '../assets/img/webp/chicky-empaque.webp';
 import QuedanPocasUnidades from '../assets/img/webp/quedan-pocas-unidades.webp';
 import Mochilas from '../assets/img/webp/mochilas.webp';
+import SEO from '../components/SEO';
 
 const Home = () => {
   return (
     <>
+      {/* SEO Optimization */}
+      <SEO
+        title="Chiky Stranger Things - Registrá códigos y ganá premios exclusivos"
+        description="Comprá Chiky, registrá tus códigos promocionales y ganá mochilas, loncheras y cartucheras de Stranger Things. Participá en la promoción oficial de Chiky y ganá premios increíbles."
+        keywords="Chiky, Stranger Things, promoción, códigos promocionales, ganar premios, mochilas, loncheras, cartucheras, sorteo, Pozuelo"
+        ogTitle="Chiky Stranger Things - ¡Participá y ganá!"
+        ogDescription="Comprá Chiky, registrá códigos y ganá increíbles premios de Stranger Things"
+        ogUrl="https://chikystrangerthings.com"
+        canonical="https://chikystrangerthings.com"
+      />
       {/* WCAG 2.4.1 - Landmark regions */}
       <header role="banner" aria-label="Encabezado principal de Chiky Stranger Things">
 
