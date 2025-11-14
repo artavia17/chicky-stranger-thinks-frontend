@@ -1,0 +1,204 @@
+import { NavLink } from 'react-router-dom';
+import ImageHeaderDesktop from '../assets/img/webp/banner-home-desktop.webp';
+import ImageHeaderMobile from '../assets/img/webp/banner-home-mobile.webp';
+import BorderIcon from '../assets/img/svg/border.svg';
+import ChickyEmpaque from '../assets/img/webp/chicky-empaque.webp';
+import QuedanPocasUnidades from '../assets/img/webp/quedan-pocas-unidades.webp';
+import Mochilas from '../assets/img/webp/mochilas.webp';
+
+const Home = () => {
+  return (
+    <>
+      {/* WCAG 2.4.1 - Landmark regions */}
+      <header role="banner" aria-label="Encabezado principal de Chiky Stranger Things">
+
+        {/* Introducción al programa - WCAG 1.3.1 */}
+        <section aria-labelledby="hero-heading">
+          <h1 id="hero-heading" className="visually-hidden">
+            Bienvenido a la promoción Chiky Stranger Things
+          </h1>
+          {/* WCAG 1.1.1 - Imágenes con texto alternativo descriptivo */}
+          <img
+            src={ImageHeaderDesktop}
+            alt="Banner promocional Chiky Stranger Things - Comprá, registrá códigos y ganá premios exclusivos"
+            className="desktop-banner"
+            loading="eager"
+          />
+          <img
+            src={ImageHeaderMobile}
+            alt="Banner promocional Chiky Stranger Things - Comprá, registrá códigos y ganá premios exclusivos"
+            className="mobile-banner"
+            loading="eager"
+          />
+        </section>
+
+        {/* WCAG 2.4.4 - Call to action con propósito claro */}
+        <section aria-label="Acciones principales">
+          <NavLink
+            to="/ingresar-codigos"
+            aria-label="Ir a la página para ingresar códigos promocionales"
+            className="cta-button"
+          >
+            {({ isActive }) => (
+              <span aria-current={isActive ? 'page' : undefined}>
+                Ingresá códigos
+              </span>
+            )}
+          </NavLink>
+          <NavLink
+            to="/registrate"
+            aria-label="Ir a la página de registro de usuario"
+            className="cta-button"
+          >
+            {({ isActive }) => (
+              <span aria-current={isActive ? 'page' : undefined}>
+                Regístrate
+              </span>
+            )}
+          </NavLink>
+        </section>
+      </header>
+
+      {/* WCAG 1.1.1 - Imagen decorativa */}
+      <img
+        src={BorderIcon}
+        alt=""
+        aria-hidden="true"
+        role="presentation"
+        className="decorative-border"
+      />
+
+      {/* WCAG 2.4.1 - Main content landmark */}
+      <main id="main-content" role="main" aria-label="Contenido principal">
+
+        {/* Cómo participar - WCAG 1.3.1, 2.4.6 */}
+        <section aria-labelledby="como-participar-heading">
+          <h2 id="como-participar-heading">¿Cómo participar?</h2>
+
+          {/* WCAG 1.3.1 - Lista ordenada semántica */}
+          <ol
+            className="steps-list"
+            aria-label="Pasos para participar en la promoción"
+          >
+            <li>
+              <div className="step-number" aria-label="Paso 1">
+                <span aria-hidden="true">1</span>
+              </div>
+              <p>
+                <strong>COMPRÁ<br />CHIKY</strong>
+              </p>
+            </li>
+            <li>
+              <div className="step-number" aria-label="Paso 2">
+                <span aria-hidden="true">2</span>
+              </div>
+              <p>
+                <strong>REGISTRÁ</strong> LOS CÓDIGOS EN <br />
+                <NavLink
+                  to="/"
+                  aria-label="Ir a la página principal de chikystrangerthings.com"
+                >
+                  {({ isActive }) => (
+                    <span aria-current={isActive ? 'page' : undefined}>
+                      chikystrangerthings.com
+                    </span>
+                  )}
+                </NavLink>
+              </p>
+            </li>
+            <li>
+              <div className="step-number" aria-label="Paso 3">
+                <span aria-hidden="true">3</span>
+              </div>
+              <p>
+                GANÁ <strong>MOCHILAS, LONCHERAS Y CARTUCHERAS</strong>
+              </p>
+            </li>
+          </ol>
+
+          {/* WCAG 1.1.1 - Imagen de producto con alt descriptivo */}
+          <figure role="group" aria-label="Imagen del producto Chiky">
+            <img
+              src={ChickyEmpaque}
+              alt="Empaque de producto Chiky con código promocional para participar"
+              loading="lazy"
+            />
+          </figure>
+        </section>
+
+        {/* Estadísticas de premios - WCAG 1.3.1, 4.1.2 */}
+        <section aria-labelledby="estadisticas-heading">
+          <h2 id="estadisticas-heading" className="visually-hidden">
+            Estadísticas de premios disponibles
+          </h2>
+
+          <div className="stats-container">
+            {/* WCAG 1.1.1 - Imagen informativa */}
+            <img
+              src={QuedanPocasUnidades}
+              alt="Alerta: Quedan pocas unidades de premios disponibles"
+              loading="lazy"
+            />
+
+            {/* WCAG 4.1.2 - Campos de solo lectura con aria-readonly */}
+            <div role="group" aria-labelledby="contadores-heading">
+              <h3 id="contadores-heading" className="visually-hidden">
+                Contadores de códigos promocionales
+              </h3>
+
+              <div className="stat-item">
+                <label htmlFor="codigos-totales" id="label-codigos-totales">
+                  Códigos totales
+                </label>
+                <input
+                  type="text"
+                  value="100"
+                  id="codigos-totales"
+                  aria-labelledby="label-codigos-totales"
+                  aria-readonly="true"
+                  readOnly
+                  tabIndex={-1}
+                  aria-describedby="desc-codigos-totales"
+                />
+                <span id="desc-codigos-totales" className="visually-hidden">
+                  Número total de códigos promocionales disponibles en la campaña
+                </span>
+              </div>
+
+              <div className="stat-item">
+                <label htmlFor="codigos-sin-canjear" id="label-codigos-sin-canjear">
+                  Códigos sin canjear
+                </label>
+                <input
+                  type="text"
+                  value="10"
+                  id="codigos-sin-canjear"
+                  aria-labelledby="label-codigos-sin-canjear"
+                  aria-readonly="true"
+                  readOnly
+                  tabIndex={-1}
+                  aria-describedby="desc-codigos-sin-canjear"
+                  aria-live="polite"
+                />
+                <span id="desc-codigos-sin-canjear" className="visually-hidden">
+                  Número de códigos promocionales aún disponibles para canjear por premios
+                </span>
+              </div>
+            </div>
+          </div>
+
+          {/* WCAG 1.1.1 - Imagen de premios */}
+          <figure role="group" aria-label="Imagen de los premios">
+            <img
+              src={Mochilas}
+              alt="Premios disponibles: mochilas, loncheras y cartucheras de Stranger Things"
+              loading="lazy"
+            />
+          </figure>
+        </section>
+      </main>
+    </>
+  );
+};
+
+export default Home;
