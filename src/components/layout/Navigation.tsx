@@ -8,6 +8,7 @@ const Navigation = () => {
   const [isAgeVerificationModalOpen, setIsAgeVerificationModalOpen] = useState(false);
   const [isAgeRestrictionModalOpen, setIsAgeRestrictionModalOpen] = useState(false);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
 
   const navRef = useRef<HTMLElement>(null);
   const menuButtonRef = useRef<HTMLButtonElement>(null);
@@ -109,6 +110,36 @@ const Navigation = () => {
     };
   }, [isCookieModalOpen, isAgeVerificationModalOpen, isAgeRestrictionModalOpen]);
 
+  // Detectar scroll para agregar clase - Performance optimizado
+  useEffect(() => {
+    let timeoutId: number;
+
+    const handleScroll = () => {
+      // Debounce para optimizar performance
+      clearTimeout(timeoutId);
+      timeoutId = window.setTimeout(() => {
+        const scrollPosition = window.scrollY;
+
+        if (scrollPosition > 10 && !isScrolled) {
+          setIsScrolled(true);
+        } else if (scrollPosition <= 10 && isScrolled) {
+          setIsScrolled(false);
+        }
+      }, 10);
+    };
+
+    // Agregar listener de scroll
+    window.addEventListener('scroll', handleScroll, { passive: true });
+
+    // Verificar posición inicial
+    handleScroll();
+
+    return () => {
+      clearTimeout(timeoutId);
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, [isScrolled]);
+
   // Toggle del menú
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -157,28 +188,6 @@ const Navigation = () => {
 
   return (
     <>
-      {/* Skip Link - Accesibilidad WCAG 2.4.1 */}
-      <a
-        href="#main-content"
-        className="skip-link"
-        style={{
-          position: 'absolute',
-          left: '-9999px',
-          zIndex: 999,
-          padding: '1em',
-          backgroundColor: '#000',
-          color: '#fff',
-          textDecoration: 'none'
-        }}
-        onFocus={(e) => {
-          e.currentTarget.style.left = '0';
-        }}
-        onBlur={(e) => {
-          e.currentTarget.style.left = '-9999px';
-        }}
-      >
-        Saltar al contenido principal
-      </a>
 
       {/* Botón de menú móvil - WCAG 2.1.1, 4.1.2 */}
       <button
@@ -188,7 +197,7 @@ const Navigation = () => {
         aria-expanded={isMenuOpen}
         aria-controls="main-navigation"
         type="button"
-        className="menu-toggle"
+        className={`menu-toggle ${isMenuOpen ? 'open' : 'closed'} ${isScrolled ? 'scrolled' : ''}`}
       >
         <span className="visually-hidden">
           {isMenuOpen ? 'Cerrar menú' : 'Abrir menú'}
@@ -205,96 +214,125 @@ const Navigation = () => {
         id="main-navigation"
         aria-label="Navegación principal"
         role="navigation"
+        className={isScrolled ? 'scrolled' : ''}
       >
-        <ul
-          role="list"
-          aria-label="Menú de navegación"
-          style={{
-            display: isMenuOpen ? 'block' : undefined
-          }}
-        >
-          <li role="listitem">
-            <NavLink
-              ref={firstMenuItemRef}
-              to="/"
-              onClick={handleNavigation}
-              aria-label="Ir a página de inicio"
-            >
-              {({ isActive }) => (
-                <span aria-current={isActive ? 'page' : undefined}>
-                  Inicio
-                </span>
-              )}
-            </NavLink>
-          </li>
-          <li role="listitem">
-            <NavLink
-              to="/registrate"
-              onClick={handleNavigation}
-              aria-label="Ir a página de registro"
-            >
-              {({ isActive }) => (
-                <span aria-current={isActive ? 'page' : undefined}>
-                  Regístrate
-                </span>
-              )}
-            </NavLink>
-          </li>
-          <li role="listitem">
-            <button
-              type="button"
-              onClick={() => {
-                handleNavigation();
-                setIsLoginModalOpen(true);
-              }}
-              aria-label="Abrir modal para ingresar códigos promocionales"
-              className="nav-button"
-            >
-              Ingresá códigos
-            </button>
-            <NavLink
-              to="/ingresar-codigos"
-              onClick={handleNavigation}
-              aria-label="Ir a página de ingresar códigos"
-            >
-              {({ isActive }) => (
-                <span aria-current={isActive ? 'page' : undefined}>
-                  Ingresá códigos
-                </span>
-              )}
-            </NavLink>
-          </li>
-          <li role="listitem">
-            <NavLink
-              to="/ganadores"
-              onClick={handleNavigation}
-              aria-label="Ir a página de ganadores"
-            >
-              {({ isActive }) => (
-                <span aria-current={isActive ? 'page' : undefined}>
-                  Ganadores
-                </span>
-              )}
-            </NavLink>
-          </li>
-          <li role="listitem">
-            <NavLink
-              to="/premios"
-              onClick={handleNavigation}
-              aria-label="Ir a página de premios"
-            >
-              {({ isActive }) => (
-                <span aria-current={isActive ? 'page' : undefined}>
-                  Premios
-                </span>
-              )}
-            </NavLink>
-          </li>
-          <li role="listitem">
+        <section id="nav-menu" className={isMenuOpen ? 'open' : 'closed'}>
+          <ul
+            role="list"
+            className="responsive-box"
+            aria-label="Menú de navegación"
+          >
+            <li role="listitem">
+              <NavLink
+                ref={firstMenuItemRef}
+                to="/"
+                onClick={handleNavigation}
+                aria-label="Ir a página de inicio"
+              >
+                {({ isActive }) => (
+                  <span aria-current={isActive ? 'page' : undefined}>
+                    Inicio
+                  </span>
+                )}
+              </NavLink>
+            </li>
+            <li role="listitem">
+              <NavLink
+                to="/registrate"
+                onClick={handleNavigation}
+                aria-label="Ir a página de registro"
+              >
+                {({ isActive }) => (
+                  <span aria-current={isActive ? 'page' : undefined}>
+                    Regístrate
+                  </span>
+                )}
+              </NavLink>
+            </li>
+            <li role="listitem">
+              <button
+                type="button"
+                onClick={() => {
+                  handleNavigation();
+                  setIsLoginModalOpen(true);
+                }}
+                aria-label="Abrir modal para ingresar códigos promocionales"
+                className="nav-button"
+              >
+                Ingresá códigos
+              </button>
+              {/* <NavLink
+                to="/ingresar-codigos"
+                onClick={handleNavigation}
+                aria-label="Ir a página de ingresar códigos"
+              >
+                {({ isActive }) => (
+                  <span aria-current={isActive ? 'page' : undefined}>
+                    Ingresá códigos
+                  </span>
+                )}
+              </NavLink> */}
+            </li>
+            <li role="listitem">
+              <NavLink
+                to="/ganadores"
+                onClick={handleNavigation}
+                aria-label="Ir a página de ganadores"
+              >
+                {({ isActive }) => (
+                  <span aria-current={isActive ? 'page' : undefined}>
+                    Ganadores
+                  </span>
+                )}
+              </NavLink>
+            </li>
+            <li role="listitem">
+              <NavLink
+                to="/premios"
+                onClick={handleNavigation}
+                aria-label="Ir a página de premios"
+              >
+                {({ isActive }) => (
+                  <span aria-current={isActive ? 'page' : undefined}>
+                    Premios
+                  </span>
+                )}
+              </NavLink>
+            </li>
+            <li role="listitem">
+              <NavLink
+                to="/mi-perfil"
+                onClick={handleNavigation}
+                aria-label="Ir a mi perfil de usuario"
+              >
+                {({ isActive }) => (
+                  <span aria-current={isActive ? 'page' : undefined}>
+                    Mi perfil
+                  </span>
+                )}
+              </NavLink>
+            </li>
+            <li role="listitem">
+              <NavLink
+                to="/ingresar"
+                onClick={handleNavigation}
+                aria-label="Ir a página de inicio de sesión"
+              >
+                {({ isActive }) => (
+                  <span aria-current={isActive ? 'page' : undefined}>
+                    Ingresar
+                  </span>
+                )}
+              </NavLink>
+            </li>
+          </ul>
+
+
+          {/* Enlaces adicionales fuera del menú móvil */}
+          <div className="desktop-nav responsive-box " aria-label="Acciones de usuario">
             <NavLink
               to="/mi-perfil"
-              onClick={handleNavigation}
-              aria-label="Ir a mi perfil de usuario"
+              aria-label="Acceder a mi perfil de usuario"
             >
               {({ isActive }) => (
                 <span aria-current={isActive ? 'page' : undefined}>
@@ -302,45 +340,18 @@ const Navigation = () => {
                 </span>
               )}
             </NavLink>
-          </li>
-          <li role="listitem">
-            <NavLink
+            {/* <NavLink
               to="/ingresar"
-              onClick={handleNavigation}
-              aria-label="Ir a página de inicio de sesión"
+              aria-label="Iniciar sesión en la aplicación"
             >
               {({ isActive }) => (
                 <span aria-current={isActive ? 'page' : undefined}>
                   Ingresar
                 </span>
               )}
-            </NavLink>
-          </li>
-        </ul>
-
-        {/* Enlaces adicionales fuera del menú móvil */}
-        <div className="desktop-nav" aria-label="Acciones de usuario">
-          <NavLink
-            to="/mi-perfil"
-            aria-label="Acceder a mi perfil de usuario"
-          >
-            {({ isActive }) => (
-              <span aria-current={isActive ? 'page' : undefined}>
-                Mi perfil
-              </span>
-            )}
-          </NavLink>
-          <NavLink
-            to="/ingresar"
-            aria-label="Iniciar sesión en la aplicación"
-          >
-            {({ isActive }) => (
-              <span aria-current={isActive ? 'page' : undefined}>
-                Ingresar
-              </span>
-            )}
-          </NavLink>
-        </div>
+            </NavLink> */}
+          </div>
+        </section>
       </nav>
 
       {/* Modal para aceptar las cookies - WCAG 2.4.3, 4.1.2 */}
@@ -350,21 +361,22 @@ const Navigation = () => {
           aria-modal="true"
           aria-labelledby="cookie-modal-title"
           aria-describedby="cookie-modal-description"
-          className="modal-overlay"
+          className="modal-overlay cookies"
           ref={cookieModalRef}
         >
-          <div className="modal-content" role="document">
+          <div className="modal-content responsive-box" role="document">
             <h2 id="cookie-modal-title" className="visually-hidden">
               Aviso de cookies
             </h2>
-            <p id="cookie-modal-description">
+            <p id="cookie-modal-description" className="txt-medium">
               Al hacer clic en "Aceptar todas las cookies", acepta que las cookies se guardan en su dispositivo para mejorar la navegación del sitio, analizar el uso del mismo, y colaborar con nuestros estudios para marketing. Ver política de tratamiento de datos personales.
             </p>
-            <div role="group" aria-label="Opciones de cookies">
+            <div role="group" aria-label="Opciones de cookies" className="cookie-buttons">
               <button
                 onClick={handleAcceptCookies}
                 type="button"
                 aria-label="Aceptar todas las cookies y continuar"
+                className="btn-accept"
               >
                 Aceptar todas las cookies
               </button>
@@ -372,6 +384,7 @@ const Navigation = () => {
                 onClick={handleRejectCookies}
                 type="button"
                 aria-label="Rechazar cookies opcionales"
+                className="btn-accept"
               >
                 Rechazar
               </button>
@@ -389,18 +402,19 @@ const Navigation = () => {
           className="modal-overlay"
           ref={ageVerificationModalRef}
         >
-          <div className="modal-content" role="document">
-            <h2 id="age-verification-title">
+          <div className="modal-content responsive-box" role="document">
+            <h3 id="age-verification-title">
               ¿SOS MAYOR DE EDAD?
-            </h2>
+            </h3>
             <p className="visually-hidden">
               Para continuar, debe confirmar que es mayor de 18 años
             </p>
-            <div role="group" aria-label="Verificación de edad">
+            <div role="group" aria-label="Verificación de edad" className="age-buttons">
               <button
                 onClick={handleAgeYes}
                 type="button"
                 aria-label="Sí, soy mayor de 18 años"
+                className="btn-code"
                 autoFocus
               >
                 Sí
@@ -409,6 +423,7 @@ const Navigation = () => {
                 onClick={handleAgeNo}
                 type="button"
                 aria-label="No, soy menor de 18 años"
+                className="btn-code"
               >
                 No
               </button>
@@ -435,14 +450,6 @@ const Navigation = () => {
             <p id="age-restriction-description">
               <strong>Solo pueden participar mayores de 18 años</strong>
             </p>
-            <button
-              onClick={() => setIsAgeRestrictionModalOpen(false)}
-              type="button"
-              aria-label="Cerrar mensaje y salir del sitio"
-              autoFocus
-            >
-              Entendido
-            </button>
           </div>
         </div>
       )}

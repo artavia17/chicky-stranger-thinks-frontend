@@ -1,5 +1,16 @@
 @import "./var";
 
+// Components
+@import "./components/background";
+@import "./components/nav/nav";
+@import "./components/nav/cookies";
+@import "./components/buttons";
+@import "./components/text";
+@import "./components/modal";
+
+// Page
+@import "./pages/home";
+
 *,
 html,
 body {
@@ -8,7 +19,7 @@ body {
 }
 
 html {
-  scrollbar-gutter: stable;
+  // scrollbar-gutter: stable;
   scroll-behavior: smooth;
 }
 
@@ -37,6 +48,16 @@ html {
   clip: rect(0, 0, 0, 0) !important;
   white-space: nowrap !important;
   border: 0 !important;
+}
+
+.skip-link {
+  position: "absolute";
+  left: "-9999px";
+  z-index: 999;
+  padding: "1em";
+  background-color: "#000";
+  color: "#fff";
+  text-decoration: "none";
 }
 
 .container {
@@ -151,4 +172,19 @@ html {
 img {
   pointer-events: none;
   user-select: none;
+}
+
+// Responsive Iframe
+.desktop{
+  display: none;
+  @include bp(laptop){
+    display: block;
+  }
+}
+
+.mobile{
+  display: block;
+  @include bp(laptop){
+    display: none;
+  }
 }

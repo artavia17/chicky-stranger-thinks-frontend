@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import SEO from '../components/SEO';
 
 interface Winner {
     name: string;
@@ -74,6 +75,17 @@ const Winners = () => {
 
     return (
         <>
+            {/* SEO Meta Tags */}
+            <SEO
+                title="Ganadores - Chiky Stranger Things | Lista de ganadores oficiales"
+                description="Conocé la lista oficial de ganadores de la promoción Chiky Stranger Things. Consultá los sorteos por período y descubrí si ganaste uno de los increíbles premios."
+                keywords="ganadores Chiky, lista ganadores, sorteos Chiky, ganadores Stranger Things, resultados sorteo, premios ganados"
+                ogTitle="Lista de Ganadores - Chiky Stranger Things"
+                ogDescription="Consultá la lista oficial de ganadores de cada período de la promoción Chiky Stranger Things"
+                ogUrl="https://chikystrangerthings.com/ganadores"
+                canonical="https://chikystrangerthings.com/ganadores"
+            />
+
             {/* WCAG 2.4.1 - Main landmark */}
             <main id="main-content" role="main" aria-labelledby="winners-heading">
 

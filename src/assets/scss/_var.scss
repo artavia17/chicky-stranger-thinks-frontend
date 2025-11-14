@@ -1,16 +1,26 @@
 @use 'sass:math';
 
 // Imports Fonts
-// @font-face {
-//     font-family: gotham_black;
-//     src: url(../fonts/gotham_black.otf);
-// }
+@font-face {
+    font-family: itc-avantgarde-bold;
+    src: url(../fonts/ITC-Avant-Garde-Gothic-Pro-Bold.otf);
+}
+
+@font-face {
+    font-family: itc-avantgarde-medium;
+    src: url(../fonts/ITC-Avant-Garde-Gothic-Pro-Medium.otf);
+}
 
 // Colors
-// $principal_color: #F73E00;
+$background-color: #DA0000;
+$text-color: #FFFFFF;
+$text-active-color: #750000;
+$modal-overlay-bg-color: rgba(0, 0, 0, 0.339);
+$modal-background-color: #141414;
 
 // Fonts
-// $font_primary: gotham_book;
+$font_bold: itc-avantgarde-bold;
+$font_medium: itc-avantgarde-medium;
 
 // Medias Query
 @mixin bp($point) {

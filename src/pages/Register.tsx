@@ -6,6 +6,7 @@ import GetInto from '../components/GetInto';
 import { NavLink } from 'react-router-dom';
 import CloseIcon from '../assets/img/svg/close.svg';
 import CheckIcon from '../assets/img/svg/check.svg';
+import SEO from '../components/SEO';
 
 const Register = () => {
     const [formErrors] = useState<Record<string, string>>({});
@@ -111,6 +112,17 @@ const Register = () => {
 
     return (
         <>
+            {/* SEO Meta Tags */}
+            <SEO
+                title="Registrate - Chiky Stranger Things | Creá tu cuenta y ganá"
+                description="Registrate en la promoción Chiky Stranger Things. Completá tus datos y empezá a ingresar códigos para ganar mochilas, loncheras y cartucheras de Stranger Things."
+                keywords="registro Chiky, crear cuenta, formulario registro, Stranger Things promoción, registrarse, nueva cuenta, participar promoción"
+                ogTitle="Registrate y Participá - Chiky Stranger Things"
+                ogDescription="Creá tu cuenta gratis y empezá a participar por increíbles premios de Stranger Things con Chiky"
+                ogUrl="https://chikystrangerthings.com/registrate"
+                canonical="https://chikystrangerthings.com/registrate"
+            />
+
             {/* WCAG 2.4.1 - Main landmark */}
             <main id="main-content" role="main" aria-labelledby="register-heading">
 

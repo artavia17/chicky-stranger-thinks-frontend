@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import SEO from '../components/SEO';
 
 interface CodeEntry {
     date: string;
@@ -31,6 +32,18 @@ const Profile = () => {
 
     return (
         <>
+            {/* SEO Meta Tags */}
+            <SEO
+                title="Mi Perfil - Chiky Stranger Things | Datos y códigos ingresados"
+                description="Consultá tu perfil de usuario, revisá tus datos personales y el historial completo de códigos promocionales ingresados en la promoción Chiky Stranger Things."
+                keywords="perfil usuario Chiky, mi cuenta, códigos ingresados, historial códigos, datos personales, mi perfil Stranger Things"
+                ogTitle="Mi Perfil - Chiky Stranger Things"
+                ogDescription="Accedé a tu perfil y consultá el historial de todos tus códigos ingresados"
+                ogUrl="https://chikystrangerthings.com/perfil"
+                canonical="https://chikystrangerthings.com/perfil"
+                noindex={true}
+            />
+
             {/* WCAG 2.4.1 - Main landmark */}
             <main id="main-content" role="main" aria-labelledby="profile-heading">
 

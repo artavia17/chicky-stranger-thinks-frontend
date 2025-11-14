@@ -1,0 +1,45 @@
+.modal-overlay{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: $modal-overlay-bg-color;
+    backdrop-filter: blur(5px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+
+    .modal-content{
+        background-color: $modal-background-color;
+        padding: rem(40px) rem(20px);
+        width: calc(100% - rem(80px));
+        border-radius: rem(10px);
+        display: flex;
+        flex-flow: column;
+        align-items: center;
+        gap: rem(15px);
+        
+        p{
+            text-align: center;
+            text-wrap: balance;
+
+            strong{
+                width: 100%;
+                display: block;
+            }
+        }
+
+        .age-buttons{
+            display: flex;
+            flex-flow: row;
+            gap: rem(10px);
+            width: 100%;
+            
+            button{
+                width: 100%;
+            }
+        }
+    }
+}

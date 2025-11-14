@@ -2,6 +2,7 @@ import { NavLink } from 'react-router-dom';
 import BorderIcon from '../assets/img/svg/border.svg';
 import { useState, useRef } from 'react';
 import type { FormEvent, ChangeEvent } from 'react';
+import SEO from '../components/SEO';
 
 const PromotionalCode = () => {
     const [promoCode, setPromoCode] = useState('');
@@ -65,6 +66,17 @@ const PromotionalCode = () => {
 
     return (
         <>
+            {/* SEO Meta Tags */}
+            <SEO
+                title="Ingresá Códigos - Chiky Stranger Things | Participá por premios"
+                description="Ingresá tus códigos promocionales de Chiky y participá por mochilas, loncheras y cartucheras de Stranger Things. Comprá, registrá y ganá."
+                keywords="ingresar códigos Chiky, códigos promocionales, participar sorteo, códigos Stranger Things, ingresar código, promoción Chiky"
+                ogTitle="Ingresá tus Códigos - Chiky Stranger Things"
+                ogDescription="Ingresá los códigos de tus productos Chiky y participá por premios exclusivos de Stranger Things"
+                ogUrl="https://chikystrangerthings.com/ingresa-codigos"
+                canonical="https://chikystrangerthings.com/ingresa-codigos"
+            />
+
             {/* WCAG 2.4.1 - Main landmark */}
             <main id="main-content" role="main" aria-labelledby="promo-code-heading">
 
