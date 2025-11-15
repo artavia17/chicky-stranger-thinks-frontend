@@ -7,10 +7,10 @@ import InstagramLogo from '../../assets/img/svg/instagram-logo.svg';
 const Footer = () => {
     return (
         // WCAG 2.4.1 - Landmark contentinfo
-        <footer role="contentinfo" aria-label="Pie de página con información legal y enlaces de redes sociales">
+        <footer role="contentinfo" aria-label="Pie de página con información legal y enlaces de redes sociales" className="responsive-box">
 
             {/* Reglamento - WCAG 2.4.4 */}
-            <nav aria-label="Enlaces legales principales">
+            <nav aria-label="Enlaces legales principales" className="footer-reglamento-nav">
                 <NavLink
                     to="/reglamento"
                     aria-label="Ver reglamento completo de la promoción"
@@ -34,7 +34,7 @@ const Footer = () => {
             </nav>
 
             {/* WCAG 1.3.1 - Contenedor del footer */}
-            <section aria-label="Información de la empresa y redes sociales">
+            <section aria-label="Información de la empresa y redes sociales" className="footer-info-section">
 
                 {/* Logo como enlace a inicio - WCAG 2.4.4 */}
                 <NavLink
@@ -53,7 +53,7 @@ const Footer = () => {
                 </NavLink>
 
                 {/* WCAG 1.3.1 - Navegación secundaria y redes sociales */}
-                <nav aria-label="Enlaces legales y redes sociales">
+                <nav aria-label="Enlaces legales y redes sociales" className="footer-secondary-nav">
                     <ul role="list" className="footer-links-list">
                         {/* Enlaces legales - WCAG 2.4.4, 3.2.5 */}
                         <li>
