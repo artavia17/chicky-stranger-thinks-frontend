@@ -13,11 +13,19 @@ strong{
 h2{
     font-family: $font_bold;
     color: $text-color;
-    font-size: rem(35px);
+    font-size: rem(30px);
 }
 
 h3{
     font-family: $font_bold;
     color: $text-color;
     font-size: rem(25px);
+}
+
+.shadow{
+    text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.629);
+}
+
+.text-transform-uppercase{
+    text-transform: uppercase;
 }

@@ -1,17 +1,130 @@
-header.home{
-    .hero-section{
-        margin-top: rem(90px); // Space for nav top: rem(20px); and height: rem(50px) => 70px + extra space 20px;
+header.home {
+  .hero-section {
+    margin-top: rem(
+      90px
+    ); // Space for nav top: rem(20px); and height: rem(50px) => 70px + extra space 20px;
 
-        img{
-            width: 100%;
+    img {
+      width: 100%;
+    }
+  }
+
+  .cta-buttons {
+    margin-top: rem(25px);
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    align-items: center;
+    gap: rem(10px);
+  }
+}
+
+#main-content {
+  .how-to-participate-section {
+    h2 {
+      text-align: center;
+    }
+
+    .steps-list {
+      display: grid;
+      grid-template-columns: repeat(3, calc(33.33% - rem(20px)));
+      gap: rem(20px);
+      justify-items: center;
+
+      li {
+        list-style: none;
+        margin-top: rem(15px);
+
+        .step-number {
+          display: flex;
+          justify-content: center;
+
+          div {
+            background-color: $background-color;
+            width: rem(50px);
+            aspect-ratio: 1 / 1;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: rem(15px);
+
+            h2 {
+              color: $text-color;
+              transform: translateY(3px);
+            }
+          }
         }
+      }
+      p,
+      strong {
+        font-size: rem(10px);
+        text-align: center;
+
+        a {
+          background-color: $modal-background-color;
+          color: $text-color;
+          text-decoration: none;
+          padding: rem(6px) rem(10px);
+          display: block;
+          margin-top: rem(5px);
+          border-radius: rem(25px);
+        }
+      }
     }
 
-    .cta-buttons{
-        margin-top: rem(25px);
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        align-items: center;
-        gap: rem(10px);
+    .empaque {
+      img {
+        width: 100%;
+        margin: rem(50px) 0;
+      }
     }
+  }
+
+  .units-containers {
+    .stats-container {
+      h2 {
+        text-align: center;
+        font-size: rem(40px);
+      }
+
+      .stat {
+        display: grid;
+        grid-template-columns: repeat(2, calc(50% - rem(10px)));
+        gap: rem(20px);
+        margin-top: rem(10px);
+
+        .stat-item {
+          display: flex;
+          flex-flow: column;
+          align-items: center;
+          gap: rem(5px);
+
+          label {
+            font-size: rem(12px);
+            color: $text-color;
+            font-family: $font_medium;
+          }
+
+          input {
+            background-color: $background-color;
+            text-align: center;
+            border: none;
+            width: calc(100% - rem(40px));
+            padding: rem(17px) rem(10px) rem(15px) rem(10px);
+            font-size: rem(17px);
+            color: $text-color;
+            font-family: $font_medium;
+            border-radius: rem(10px);
+          }
+        }
+      }
+    }
+
+    figure {
+        img {
+          width: 100%;
+          margin: rem(40px) 0;
+        }
+      }
+  }
 }

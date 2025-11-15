@@ -13,6 +13,7 @@
     border-radius: 50%;
     transition: .5s ease;
     transform: rotate3d(1, 1, 1, 0deg);
+    z-index: 99;
 
     &.scrolled{
         background-color: rgba(0, 0, 0, 0.363);
@@ -68,6 +69,7 @@
 #main-navigation{
     #nav-menu{
         background-color: $background-color;
+        z-index: 9;
 
         // Position
         position: fixed;

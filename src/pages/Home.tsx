@@ -3,7 +3,6 @@ import ImageHeaderDesktop from '../assets/img/webp/banner-home-desktop.webp';
 import ImageHeaderMobile from '../assets/img/webp/banner-home-mobile.webp';
 import BorderIcon from '../assets/img/svg/border.svg';
 import ChickyEmpaque from '../assets/img/webp/chicky-empaque.webp';
-import QuedanPocasUnidades from '../assets/img/webp/quedan-pocas-unidades.webp';
 import Mochilas from '../assets/img/webp/mochilas.webp';
 import SEO from '../components/SEO';
 
@@ -71,20 +70,21 @@ const Home = () => {
       </header>
 
       {/* WCAG 1.1.1 - Imagen decorativa */}
-      <img
-        src={BorderIcon}
-        alt=""
-        aria-hidden="true"
-        role="presentation"
-        className="decorative-border"
-      />
+      <figure className="decorative-border responsive-box " aria-hidden="true">
+        <img
+          src={BorderIcon}
+          alt=""
+          aria-hidden="true"
+          role="presentation"
+        />
+      </figure>
 
       {/* WCAG 2.4.1 - Main content landmark */}
-      <main id="main-content" role="main" aria-label="Contenido principal">
+      <main id="main-content" role="main" aria-label="Contenido principal" className='responsive-box'>
 
         {/* Cómo participar - WCAG 1.3.1, 2.4.6 */}
-        <section aria-labelledby="como-participar-heading">
-          <h2 id="como-participar-heading">¿Cómo participar?</h2>
+        <section aria-labelledby="como-participar-heading" className="how-to-participate-section">
+          <h2 id="como-participar-heading" className='shadow text-transform-uppercase'>¿Cómo participar?</h2>
 
           {/* WCAG 1.3.1 - Lista ordenada semántica */}
           <ol
@@ -93,7 +93,9 @@ const Home = () => {
           >
             <li>
               <div className="step-number" aria-label="Paso 1">
-                <span aria-hidden="true">1</span>
+                <div>
+                  <h2 aria-hidden="true">1</h2>
+                </div>
               </div>
               <p>
                 <strong>COMPRÁ<br />CHIKY</strong>
@@ -101,10 +103,12 @@ const Home = () => {
             </li>
             <li>
               <div className="step-number" aria-label="Paso 2">
-                <span aria-hidden="true">2</span>
+                <div>
+                  <h2 aria-hidden="true">2</h2>
+                </div>
               </div>
               <p>
-                <strong>REGISTRÁ</strong> LOS CÓDIGOS EN <br />
+                <strong>REGISTRÁ</strong> <br/> LOS CÓDIGOS EN <br />
                 <NavLink
                   to="/"
                   aria-label="Ir a la página principal de chikystrangerthings.com"
@@ -119,7 +123,9 @@ const Home = () => {
             </li>
             <li>
               <div className="step-number" aria-label="Paso 3">
-                <span aria-hidden="true">3</span>
+                <div>
+                  <h2 aria-hidden="true">3</h2>
+                </div>
               </div>
               <p>
                 GANÁ <strong>MOCHILAS, LONCHERAS Y CARTUCHERAS</strong>
@@ -128,7 +134,7 @@ const Home = () => {
           </ol>
 
           {/* WCAG 1.1.1 - Imagen de producto con alt descriptivo */}
-          <figure role="group" aria-label="Imagen del producto Chiky">
+          <figure role="group" aria-label="Imagen del producto Chiky" className='empaque'>
             <img
               src={ChickyEmpaque}
               alt="Empaque de producto Chiky con código promocional para participar"
@@ -138,18 +144,16 @@ const Home = () => {
         </section>
 
         {/* Estadísticas de premios - WCAG 1.3.1, 4.1.2 */}
-        <section aria-labelledby="estadisticas-heading">
+        <section className='units-containers' aria-labelledby="estadisticas-heading">
           <h2 id="estadisticas-heading" className="visually-hidden">
             Estadísticas de premios disponibles
           </h2>
 
           <div className="stats-container">
             {/* WCAG 1.1.1 - Imagen informativa */}
-            <img
-              src={QuedanPocasUnidades}
-              alt="Alerta: Quedan pocas unidades de premios disponibles"
-              loading="lazy"
-            />
+            <h2 className='shadow text-transform-uppercase'>
+              Quedan pocas unidades
+            </h2>
 
             {/* WCAG 4.1.2 - Campos de solo lectura con aria-readonly */}
             <div role="group" aria-labelledby="contadores-heading">
@@ -157,44 +161,46 @@ const Home = () => {
                 Contadores de códigos promocionales
               </h3>
 
-              <div className="stat-item">
-                <label htmlFor="codigos-totales" id="label-codigos-totales">
-                  Códigos totales
-                </label>
-                <input
-                  type="text"
-                  value="100"
-                  id="codigos-totales"
-                  aria-labelledby="label-codigos-totales"
-                  aria-readonly="true"
-                  readOnly
-                  tabIndex={-1}
-                  aria-describedby="desc-codigos-totales"
-                />
-                <span id="desc-codigos-totales" className="visually-hidden">
-                  Número total de códigos promocionales disponibles en la campaña
-                </span>
-              </div>
+              <section className='stat'>
+                <div className="stat-item">
+                  <label htmlFor="codigos-totales" id="label-codigos-totales">
+                    Códigos totales
+                  </label>
+                  <input
+                    type="text"
+                    value="100"
+                    id="codigos-totales"
+                    aria-labelledby="label-codigos-totales"
+                    aria-readonly="true"
+                    readOnly
+                    tabIndex={-1}
+                    aria-describedby="desc-codigos-totales"
+                  />
+                  <span id="desc-codigos-totales" className="visually-hidden">
+                    Número total de códigos promocionales disponibles en la campaña
+                  </span>
+                </div>
 
-              <div className="stat-item">
-                <label htmlFor="codigos-sin-canjear" id="label-codigos-sin-canjear">
-                  Códigos sin canjear
-                </label>
-                <input
-                  type="text"
-                  value="10"
-                  id="codigos-sin-canjear"
-                  aria-labelledby="label-codigos-sin-canjear"
-                  aria-readonly="true"
-                  readOnly
-                  tabIndex={-1}
-                  aria-describedby="desc-codigos-sin-canjear"
-                  aria-live="polite"
-                />
-                <span id="desc-codigos-sin-canjear" className="visually-hidden">
-                  Número de códigos promocionales aún disponibles para canjear por premios
-                </span>
-              </div>
+                <div className="stat-item">
+                  <label htmlFor="codigos-sin-canjear" id="label-codigos-sin-canjear">
+                    Códigos sin canjear
+                  </label>
+                  <input
+                    type="text"
+                    value="10"
+                    id="codigos-sin-canjear"
+                    aria-labelledby="label-codigos-sin-canjear"
+                    aria-readonly="true"
+                    readOnly
+                    tabIndex={-1}
+                    aria-describedby="desc-codigos-sin-canjear"
+                    aria-live="polite"
+                  />
+                  <span id="desc-codigos-sin-canjear" className="visually-hidden">
+                    Número de códigos promocionales aún disponibles para canjear por premios
+                  </span>
+                </div>
+              </section>
             </div>
           </div>
 
