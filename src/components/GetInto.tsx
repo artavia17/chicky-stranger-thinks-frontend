@@ -138,9 +138,9 @@ const GetInto = ({ isOpen, onClose, onSubmit }: GetIntoProps) => {
         </button>
 
         {/* Título del modal - WCAG 2.4.6 */}
-        <h2 id="login-modal-title">
+        <h3 id="login-modal-title">
           INGRESÁ A TU PERFIL
-        </h2>
+        </h3>
 
         <p id="login-modal-description" className="visually-hidden">
           Ingrese su número de identificación para acceder a su perfil
@@ -151,6 +151,7 @@ const GetInto = ({ isOpen, onClose, onSubmit }: GetIntoProps) => {
           onSubmit={handleSubmit}
           aria-label="Formulario de inicio de sesión"
           noValidate
+          className='normal'
         >
           <div className="form-field">
             <label htmlFor="identification-number">
@@ -170,7 +171,6 @@ const GetInto = ({ isOpen, onClose, onSubmit }: GetIntoProps) => {
               aria-describedby={error ? 'error-identification-number' : 'desc-identification-number'}
               inputMode="numeric"
               autoComplete="off"
-              placeholder="Ingrese su número de identificación"
             />
             <span id="desc-identification-number" className="visually-hidden">
               Ingrese solo números sin espacios ni caracteres especiales
@@ -191,7 +191,7 @@ const GetInto = ({ isOpen, onClose, onSubmit }: GetIntoProps) => {
           <button
             type="submit"
             aria-label="Iniciar sesión con número de identificación"
-            className="submit-button"
+            className="btn-code submit-button"
           >
             Ingresar
           </button>

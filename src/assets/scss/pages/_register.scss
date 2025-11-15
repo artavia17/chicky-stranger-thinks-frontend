@@ -1,0 +1,29 @@
+.register-page{
+    .character-image{
+        position: absolute;
+        right: 0px;
+        width: 75%;
+        z-index: -1;
+    }
+
+    .chicky-logo{
+        display: block;
+        padding: rem(75px) 0 0 0;
+        width: rem(100px);
+        margin-bottom: rem(30px);
+    }
+
+    .already-have-account{
+        padding-bottom: rem(50px);
+
+        h4{
+            text-align: center;
+            margin-bottom: rem(10px);
+        }
+
+        button,
+        a{
+            width: 100%;
+        }
+    }
+}

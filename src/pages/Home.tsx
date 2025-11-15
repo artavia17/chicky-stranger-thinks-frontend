@@ -20,7 +20,7 @@ const Home = () => {
         canonical="https://chikystrangerthings.com"
       />
       {/* WCAG 2.4.1 - Landmark regions */}
-      <header className='home' role="banner" aria-label="Encabezado principal de Chiky Stranger Things">
+      <header className='home top-space' role="banner" aria-label="Encabezado principal de Chiky Stranger Things">
 
         {/* Introducción al programa - WCAG 1.3.1 */}
         <section aria-labelledby="hero-heading" className="hero-section responsive-box">

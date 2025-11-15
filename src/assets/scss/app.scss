@@ -9,9 +9,12 @@
 @import "./components/modal";
 @import "./components/border";
 @import "./components/footer/footer";
+@import "./components/top-space";
+@import "./components/form";
 
 // Page
 @import "./pages/home";
+@import "./pages/register";
 
 *,
 html,
