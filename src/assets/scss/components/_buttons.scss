@@ -10,6 +10,28 @@
     color: $background-color;
     text-transform: uppercase;
     border: 1px solid transparent;
+    cursor: pointer;
+    transition: all 0.3s ease;
+
+    &:hover{
+        color: $text-color;
+        background-color: $background-color;
+        border: 1px solid $text-color;
+    }
+}
+
+.btn-code-v2{
+    background-color: $background-color;
+    display: block;
+    text-align: center;
+    padding: rem(13px) rem(0px) rem(10px) rem(0px);
+    font-size: rem(15px);
+    text-decoration: none;
+    font-family: $font_bold;
+    border-radius: rem(25px);
+    color: $text-color;
+    text-transform: uppercase;
+    border: 1px solid transparent;
 }
 
 
@@ -25,4 +47,11 @@
     color: $text-color;
     text-transform: uppercase;
     border: 1px solid transparent;
+    transition: all 0.3s ease;
+
+    &:hover{
+        color: $text-active-color;
+        background-color: $text-color;
+        border: 1px solid $text-active-color;
+    }
 }

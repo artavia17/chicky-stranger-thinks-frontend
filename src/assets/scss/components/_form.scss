@@ -1,6 +1,14 @@
 form.normal {
     width: 100%;
 
+  .form-row{
+    @include bp(laptop) {
+      display: flex;
+      flex-flow: row;
+      gap: rem(20px);
+    }
+  }
+
   .form-field,
   .form-row {
     margin-bottom: rem(16px);
@@ -27,7 +35,14 @@ form.normal {
       color: $text-color;
       font-family: $font-medium;
       font-size: rem(14px);
-      
+
+      @include bp(laptop) {
+        border: 2px solid $background-color;
+      }
+    }
+
+    select{
+      cursor: pointer;
     }
 
     select {
@@ -54,6 +69,11 @@ form.normal {
         font-family: $font-medium;
         font-size: rem(14px);
         text-wrap: balance;
+        cursor: pointer;
+
+        span{
+          cursor: pointer;
+        }
 
         a{
             color: $text-color;
@@ -61,6 +81,7 @@ form.normal {
 
         input{
             margin-right: rem(10px);
+            cursor: pointer;
         }
     }
   }
@@ -69,5 +90,20 @@ form.normal {
   button{
     width: 100%;
     margin-top: rem(30px);
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+
+    &:hover {
+      background-color: $text-color;
+      color: $background-color;
+    }
+
+    &.btn-code{
+      &:hover{
+        color: $text-color;
+        background-color: $background-color;
+        border: 1px solid $text-color;
+      }
+    }
   }
 }

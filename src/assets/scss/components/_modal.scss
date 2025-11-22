@@ -21,6 +21,11 @@
         align-items: center;
         gap: rem(15px);
         position: relative;
+        max-width: rem(400px);
+
+        @include bp(laptop){
+            padding: rem(45px) rem(45px);
+        }
         
         p{
             text-align: center;
@@ -39,6 +44,12 @@
             background-color: transparent;
             border: none;
             height: auto;
+            cursor: pointer;
+            transition: scale 0.2s ease-in-out;
+
+            &:hover {
+                scale: 1.1;
+            }
 
             img{
                 width: rem(15px);

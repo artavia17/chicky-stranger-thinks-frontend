@@ -11,11 +11,21 @@ header.home {
     grid-template-columns: repeat(2, 1fr);
     align-items: center;
     gap: rem(10px);
+
+    @include bp(laptop) {
+      max-width: 550px;
+    }
   }
 }
 
 #main-content {
   .how-to-participate-section {
+    @include bp(laptop) {
+      display: flex;
+      flex-flow: column;
+      align-items: center;
+    }
+
     h2 {
       text-align: center;
     }
@@ -25,6 +35,10 @@ header.home {
       grid-template-columns: repeat(3, calc(33.33% - rem(20px)));
       gap: rem(20px);
       justify-items: center;
+
+      @include bp(laptop) {
+        margin-top: rem(25px);
+      }
 
       li {
         list-style: none;
@@ -44,6 +58,10 @@ header.home {
             justify-content: center;
             margin-bottom: rem(15px);
 
+            @include bp(laptop) {
+              width: rem(75px);
+            }
+
             h2 {
               color: $text-color;
               transform: translateY(3px);
@@ -56,6 +74,10 @@ header.home {
         font-size: rem(10px);
         text-align: center;
 
+        @include bp(laptop) {
+          font-size: rem(18px);
+        }
+
         a {
           background-color: $modal-background-color;
           color: $text-color;
@@ -64,6 +86,16 @@ header.home {
           display: block;
           margin-top: rem(5px);
           border-radius: rem(25px);
+          transition: all 0.3s ease;
+
+          @include bp(laptop) {
+            padding: rem(8px) rem(15px);
+
+            &:hover {
+              background-color: $text-color;
+              color: $modal-background-color;
+            }
+          }
         }
       }
     }
@@ -72,11 +104,23 @@ header.home {
       img {
         width: 100%;
         margin: rem(50px) 0;
+
+        @include bp(laptop) {
+          max-width: rem(600px);
+        }
       }
     }
   }
 
   .units-containers {
+
+    @include bp(laptop) {
+      display: flex;
+      flex-flow: row-reverse;
+      align-items: center;
+      gap: rem(75px);
+    }
+
     .stats-container {
       h2 {
         text-align: center;
@@ -99,6 +143,10 @@ header.home {
             font-size: rem(12px);
             color: $text-color;
             font-family: $font_medium;
+
+            @include bp(laptop) {
+              font-size: rem(15px);
+            }
           }
 
           input {

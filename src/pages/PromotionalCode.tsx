@@ -1,5 +1,6 @@
 import { NavLink } from 'react-router-dom';
 import BorderIcon from '../assets/img/svg/border.svg';
+import BorderBigIcon from '../assets/img/svg/border-big.svg';
 import { useState, useRef } from 'react';
 import type { FormEvent, ChangeEvent } from 'react';
 import SEO from '../components/SEO';
@@ -78,112 +79,123 @@ const PromotionalCode = () => {
             />
 
             {/* WCAG 2.4.1 - Main landmark */}
-            <main id="main-content" role="main" aria-labelledby="promo-code-heading">
+            <main id="main-content" role="main" aria-labelledby="promo-code-heading" className='top-space promotional-code-page'>
+                <div className='responsive-box'>
+                    {/* Formulario de código promocional - WCAG 3.3.2 */}
+                    <section aria-labelledby="promo-code-heading">
+                        <h1 id="promo-code-heading">Código promocional</h1>
 
-                {/* Formulario de código promocional - WCAG 3.3.2 */}
-                <section aria-labelledby="promo-code-heading">
-                    <h1 id="promo-code-heading">Código promocional</h1>
-
-                    {/* WCAG 3.3.1, 3.3.2 - Formulario accesible */}
-                    <form
-                        onSubmit={handleSubmit}
-                        aria-label="Formulario para ingresar código promocional"
-                        noValidate
-                    >
-                        <div className="form-field">
-                            <label htmlFor="promo-code">
-                                <span>Ingrese su código promocional:</span>
-                                <span className="required-indicator" aria-label="campo obligatorio">*</span>
-                            </label>
-                            <input
-                                ref={inputRef}
-                                type="text"
-                                id="promo-code"
-                                name="promo-code"
-                                value={promoCode}
-                                onChange={handleChange}
-                                required
-                                aria-required="true"
-                                aria-invalid={error ? 'true' : 'false'}
-                                aria-describedby={
-                                    error
-                                        ? 'error-promo-code'
-                                        : successMessage
-                                        ? 'success-promo-code'
-                                        : 'desc-promo-code'
-                                }
-                                placeholder="Ej: ABC123"
-                                autoComplete="off"
-                                maxLength={20}
-                                pattern="[A-Z0-9]+"
-                                className={error ? 'input-error' : successMessage ? 'input-success' : ''}
-                            />
-
-                            {/* Descripción del campo - WCAG 3.3.2 */}
-                            <span id="desc-promo-code" className="visually-hidden">
-                                Ingrese el código promocional que aparece en el empaque del producto. Solo letras y números.
-                            </span>
-
-                            {/* WCAG 3.3.1 - Mensaje de error */}
-                            {error && (
-                                <span
-                                    id="error-promo-code"
-                                    className="error-message"
-                                    role="alert"
-                                    aria-live="assertive"
-                                >
-                                    {error}
-                                </span>
-                            )}
-
-                            {/* WCAG 4.1.3 - Mensaje de éxito */}
-                            {successMessage && (
-                                <span
-                                    id="success-promo-code"
-                                    className="success-message"
-                                    role="status"
-                                    aria-live="polite"
-                                >
-                                    {successMessage}
-                                </span>
-                            )}
-                        </div>
-
-                        {/* WCAG 2.5.3 - Botón de envío */}
-                        <button
-                            type="submit"
-                            disabled={isSubmitting}
-                            aria-label={isSubmitting ? 'Enviando código promocional' : 'Enviar código promocional'}
-                            aria-busy={isSubmitting}
+                        {/* WCAG 3.3.1, 3.3.2 - Formulario accesible */}
+                        <form
+                            onSubmit={handleSubmit}
+                            aria-label="Formulario para ingresar código promocional"
+                            noValidate
+                            className='normal'
                         >
-                            {isSubmitting ? 'Enviando...' : 'Ingresar'}
-                        </button>
-                    </form>
-                </section>
+                            <div className="form-field">
+                                <label htmlFor="promo-code">
+                                    <span>Ingrese su código promocional:</span>
+                                    <span className="required-indicator" aria-label="campo obligatorio">*</span>
+                                </label>
+                                <input
+                                    ref={inputRef}
+                                    type="text"
+                                    id="promo-code"
+                                    name="promo-code"
+                                    value={promoCode}
+                                    onChange={handleChange}
+                                    required
+                                    aria-required="true"
+                                    aria-invalid={error ? 'true' : 'false'}
+                                    aria-describedby={
+                                        error
+                                            ? 'error-promo-code'
+                                            : successMessage
+                                                ? 'success-promo-code'
+                                                : 'desc-promo-code'
+                                    }
+                                    autoComplete="off"
+                                    maxLength={20}
+                                    pattern="[A-Z0-9]+"
+                                />
 
-                {/* WCAG 1.1.1 - Imagen decorativa */}
-                <img
-                    src={BorderIcon}
-                    alt=""
-                    aria-hidden="true"
-                    role="presentation"
-                    className="decorative-border"
-                />
+                                {/* Descripción del campo - WCAG 3.3.2 */}
+                                <span id="desc-promo-code" className="visually-hidden">
+                                    Ingrese el código promocional que aparece en el empaque del producto. Solo letras y números.
+                                </span>
 
-                {/* Registro desde otra página - WCAG 2.4.6 */}
-                <section aria-labelledby="no-account-heading">
-                    <h3 id="no-account-heading">¿NO TENÉS CUENTA?</h3>
-                    <NavLink
-                        to="/registrate"
-                        aria-label="Ir a página de registro para crear una cuenta nueva"
-                    >
-                        {({ isActive }) => (
-                            <span aria-current={isActive ? 'page' : undefined}>
-                                REGISTRATE
-                            </span>
-                        )}
-                    </NavLink>
-                </section>
+                                {/* WCAG 3.3.1 - Mensaje de error */}
+                                {error && (
+                                    <span
+                                        id="error-promo-code"
+                                        className="error-message"
+                                        role="alert"
+                                        aria-live="assertive"
+                                    >
+                                        {error}
+                                    </span>
+                                )}
+
+                                {/* WCAG 4.1.3 - Mensaje de éxito */}
+                                {successMessage && (
+                                    <span
+                                        id="success-promo-code"
+                                        className="success-message"
+                                        role="status"
+                                        aria-live="polite"
+                                    >
+                                        {successMessage}
+                                    </span>
+                                )}
+                            </div>
+
+                            {/* WCAG 2.5.3 - Botón de envío */}
+                            <button
+                                type="submit"
+                                disabled={isSubmitting}
+                                aria-label={isSubmitting ? 'Enviando código promocional' : 'Enviar código promocional'}
+                                aria-busy={isSubmitting}
+                                className='btn-code-v2'
+                            >
+                                {isSubmitting ? 'Enviando...' : 'Ingresar'}
+                            </button>
+                        </form>
+                    </section>
+
+                    {/* WCAG 1.1.1 - Imagen decorativa */}
+                    <figure className="decorative-border responsive-box " aria-hidden="true">
+                        <img
+                            src={BorderIcon}
+                            alt=""
+                            aria-hidden="true"
+                            role="presentation"
+                            className='mobile'
+                        />
+                        <img
+                            src={BorderBigIcon}
+                            alt=""
+                            aria-hidden="true"
+                            role="presentation"
+                            className='desktop'
+                        />
+                    </figure>
+
+                    {/* Registro desde otra página - WCAG 2.4.6 */}
+                    <section aria-labelledby="no-account-heading" className='already-have-account'>
+                        <h4 id="no-account-heading">¿NO TENÉS CUENTA?</h4>
+                        <NavLink
+                            to="/registrate"
+                            aria-label="Ir a página de registro para crear una cuenta nueva"
+                            className='btn-code'
+                        >
+                            {({ isActive }) => (
+                                <span aria-current={isActive ? 'page' : undefined}>
+                                    REGISTRATE
+                                </span>
+                            )}
+                        </NavLink>
+                    </section>
+                </div>
             </main>
         </>
     );

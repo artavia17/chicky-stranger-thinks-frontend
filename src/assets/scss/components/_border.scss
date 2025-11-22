@@ -2,5 +2,9 @@
     img{
         margin: rem(45px) 0;
         width: 100%;
+
+        @include bp(laptop) {
+          margin: rem(85px) 0;
+        }
     }
 }

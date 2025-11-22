@@ -11,10 +11,15 @@
 @import "./components/footer/footer";
 @import "./components/top-space";
 @import "./components/form";
+@import "./components/have-account";
 
 // Page
 @import "./pages/home";
 @import "./pages/register";
+@import "./pages/winners";
+@import "./pages/profile";
+@import "./pages/awards";
+@import "./pages/promotional-code-page";
 
 *,
 html,

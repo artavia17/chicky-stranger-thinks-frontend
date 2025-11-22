@@ -1,5 +1,6 @@
 import ChickyLogo from '../assets/img/webp/chicky-logo.webp';
 import BorderIcon from '../assets/img/svg/border.svg';
+import BorderBigIcon from '../assets/img/svg/border-big.svg';
 import { useState, useEffect, useRef, useCallback } from 'react';
 import type { FormEvent } from 'react';
 import GetInto from '../components/GetInto';
@@ -13,6 +14,7 @@ const Register = () => {
     const [formErrors] = useState<Record<string, string>>({});
     const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
     const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
+    const [showCommunicationChannels, setShowCommunicationChannels] = useState(false);
 
     // Referencias para el modal de éxito
     const successModalRef = useRef<HTMLDivElement>(null);
@@ -336,17 +338,102 @@ const Register = () => {
                                         required
                                         aria-required="true"
                                         aria-invalid={formErrors.communicationsConsent ? 'true' : 'false'}
-                                        aria-describedby={formErrors.communicationsConsent ? 'error-communications-consent' : undefined}
+                                        aria-describedby={formErrors.communicationsConsent ? 'error-communications-consent desc-communications-consent' : 'desc-communications-consent'}
+                                        aria-controls="communication-channels"
+                                        onChange={(e) => setShowCommunicationChannels(e.target.checked)}
                                     />
                                     <label htmlFor="communicationsConsent">
-                                        <span>Acepto recibir comunicaciones sobre actividades, eventos y promociones de la marca Chicky.</span>
+                                        <span>Autorizo recibir comunicaciones sobre actividades, eventos y promociones de la marca Chicky.</span>
+                                        <span className="required-indicator" aria-label="campo obligatorio">*</span>
                                     </label>
+                                    <span id="desc-communications-consent" className="visually-hidden">
+                                        Al marcar esta opción, se mostrarán las opciones para seleccionar los canales de comunicación
+                                    </span>
                                     {formErrors.communicationsConsent && (
                                         <span id="error-communications-consent" className="error-message" role="alert">
                                             {formErrors.communicationsConsent}
                                         </span>
                                     )}
                                 </div>
+
+                                {/* Canales de comunicación - WCAG 1.3.1, 4.1.2 */}
+                                {showCommunicationChannels && (
+                                    <div
+                                        id="communication-channels"
+                                        className="communication-channels"
+                                        role="group"
+                                        aria-labelledby="communication-channels-legend"
+                                        aria-live="polite"
+                                    >
+                                        <p id="communication-channels-legend" className="channels-legend">
+                                            Seleccione los canales por los cuales autoriza ser contactado:
+                                        </p>
+
+                                        {/* WhatsApp */}
+                                        <div className="form-checkbox form-checkbox-nested">
+                                            <input
+                                                type="checkbox"
+                                                name="whatsappConsent"
+                                                id="whatsappConsent"
+                                                aria-describedby="desc-whatsapp"
+                                            />
+                                            <label htmlFor="whatsappConsent">
+                                                <span>Autorizo ser contactado por WhatsApp</span>
+                                            </label>
+                                            <span id="desc-whatsapp" className="visually-hidden">
+                                                Recibirá mensajes de WhatsApp sobre promociones y eventos de Chicky
+                                            </span>
+                                        </div>
+
+                                        {/* Teléfono */}
+                                        <div className="form-checkbox form-checkbox-nested">
+                                            <input
+                                                type="checkbox"
+                                                name="phoneConsent"
+                                                id="phoneConsent"
+                                                aria-describedby="desc-phone"
+                                            />
+                                            <label htmlFor="phoneConsent">
+                                                <span>Autorizo ser contactado por teléfono</span>
+                                            </label>
+                                            <span id="desc-phone" className="visually-hidden">
+                                                Recibirá llamadas telefónicas sobre promociones y eventos de Chicky
+                                            </span>
+                                        </div>
+
+                                        {/* Correo electrónico */}
+                                        <div className="form-checkbox form-checkbox-nested">
+                                            <input
+                                                type="checkbox"
+                                                name="emailConsent"
+                                                id="emailConsent"
+                                                aria-describedby="desc-email"
+                                            />
+                                            <label htmlFor="emailConsent">
+                                                <span>Autorizo ser contactado por correo electrónico</span>
+                                            </label>
+                                            <span id="desc-email" className="visually-hidden">
+                                                Recibirá correos electrónicos sobre promociones y eventos de Chicky
+                                            </span>
+                                        </div>
+
+                                        {/* SMS */}
+                                        <div className="form-checkbox form-checkbox-nested">
+                                            <input
+                                                type="checkbox"
+                                                name="smsConsent"
+                                                id="smsConsent"
+                                                aria-describedby="desc-sms"
+                                            />
+                                            <label htmlFor="smsConsent">
+                                                <span>Autorizo ser contactado por SMS</span>
+                                            </label>
+                                            <span id="desc-sms" className="visually-hidden">
+                                                Recibirá mensajes de texto SMS sobre promociones y eventos de Chicky
+                                            </span>
+                                        </div>
+                                    </div>
+                                )}
 
                                 <div className="form-checkbox">
                                     <input
@@ -359,7 +446,8 @@ const Register = () => {
                                         aria-describedby={formErrors.dataPolicyConsent ? 'error-data-policy-consent' : undefined}
                                     />
                                     <label htmlFor="dataPolicyConsent">
-                                        <span>Acepto la <a href="#politica-datos" target="_blank" rel="noopener noreferrer">política de tratamiento de datos</a>.</span>
+                                        <span>Autorizo la <a href="#politica-datos" target="_blank" rel="noopener noreferrer">política de tratamiento de datos</a>.</span>
+                                        <span className="required-indicator" aria-label="campo obligatorio">*</span>
                                     </label>
                                     {formErrors.dataPolicyConsent && (
                                         <span id="error-data-policy-consent" className="error-message" role="alert">
@@ -379,7 +467,8 @@ const Register = () => {
                                         aria-describedby={formErrors.termsAndConditions ? 'error-terms-conditions' : undefined}
                                     />
                                     <label htmlFor="termsAndConditions">
-                                        <span>Acepto los <a href="#terminos-condiciones" target="_blank" rel="noopener noreferrer">términos y condiciones</a>.</span>
+                                        <span>Autorizo los <a href="#terminos-condiciones" target="_blank" rel="noopener noreferrer">términos y condiciones</a>.</span>
+                                        <span className="required-indicator" aria-label="campo obligatorio">*</span>
                                     </label>
                                     {formErrors.termsAndConditions && (
                                         <span id="error-terms-conditions" className="error-message" role="alert">
@@ -403,10 +492,18 @@ const Register = () => {
                     {/* WCAG 1.1.1 - Imagen decorativa */}
                     <figure className="decorative-border responsive-box " aria-hidden="true">
                         <img
-                        src={BorderIcon}
-                        alt=""
-                        aria-hidden="true"
-                        role="presentation"
+                            src={BorderIcon}
+                            alt=""
+                            aria-hidden="true"
+                            role="presentation"
+                            className='mobile'
+                        />
+                        <img
+                            src={BorderBigIcon}
+                            alt=""
+                            aria-hidden="true"
+                            role="presentation"
+                            className='desktop'
                         />
                     </figure>
 

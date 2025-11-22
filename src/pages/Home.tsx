@@ -2,6 +2,7 @@ import { NavLink } from 'react-router-dom';
 import ImageHeaderDesktop from '../assets/img/webp/banner-home-desktop.webp';
 import ImageHeaderMobile from '../assets/img/webp/banner-home-mobile.webp';
 import BorderIcon from '../assets/img/svg/border.svg';
+import BorderBigIcon from '../assets/img/svg/border-big.svg';
 import ChickyEmpaque from '../assets/img/webp/chicky-empaque.webp';
 import Mochilas from '../assets/img/webp/mochilas.webp';
 import SEO from '../components/SEO';
@@ -76,6 +77,14 @@ const Home = () => {
           alt=""
           aria-hidden="true"
           role="presentation"
+          className='mobile'
+        />
+        <img
+          src={BorderBigIcon}
+          alt=""
+          aria-hidden="true"
+          role="presentation"
+          className='desktop'
         />
       </figure>
 
@@ -175,6 +184,7 @@ const Home = () => {
                     readOnly
                     tabIndex={-1}
                     aria-describedby="desc-codigos-totales"
+                    disabled
                   />
                   <span id="desc-codigos-totales" className="visually-hidden">
                     Número total de códigos promocionales disponibles en la campaña
@@ -195,6 +205,7 @@ const Home = () => {
                     tabIndex={-1}
                     aria-describedby="desc-codigos-sin-canjear"
                     aria-live="polite"
+                    disabled
                   />
                   <span id="desc-codigos-sin-canjear" className="visually-hidden">
                     Número de códigos promocionales aún disponibles para canjear por premios

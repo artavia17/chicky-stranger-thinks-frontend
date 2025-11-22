@@ -1,0 +1,20 @@
+.awards-page{
+    p{
+        text-align: center;
+    }
+
+    section{
+        display: flex;
+        flex-flow: column;
+        align-items: center;
+
+        img{
+            width: 100%;
+
+            @include bp(laptop){
+                max-width: rem(500px);
+                margin: auto;
+            }
+        }
+    }
+}
