@@ -23,7 +23,9 @@
     }
 
     form{
-        max-width: 50%;
+        @include bp(laptop) {
+            max-width: 50%;
+        }
     }
 
     #communication-channels{
