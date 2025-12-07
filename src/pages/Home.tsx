@@ -1,4 +1,5 @@
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 import ImageHeaderDesktop from '../assets/img/webp/banner-home-desktop.webp';
 import ImageHeaderMobile from '../assets/img/webp/banner-home-mobile.webp';
 import BorderIcon from '../assets/img/svg/border.svg';
@@ -6,8 +7,21 @@ import BorderBigIcon from '../assets/img/svg/border-big.svg';
 import ChickyEmpaque from '../assets/img/webp/chicky-empaque.webp';
 import Mochilas from '../assets/img/webp/mochilas.webp';
 import SEO from '../components/SEO';
+import GetInto from '../components/GetInto';
+import { useAuth } from '../context/AuthContext';
 
 const Home = () => {
+  const { isAuthenticated } = useAuth();
+  const navigate = useNavigate();
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+
+  const handleIngresarCodigosClick = () => {
+    if (isAuthenticated) {
+      navigate('/ingresar-codigos');
+    } else {
+      setIsLoginModalOpen(true);
+    }
+  };
   return (
     <>
       {/* SEO Optimization */}
@@ -45,17 +59,13 @@ const Home = () => {
 
         {/* WCAG 2.4.4 - Call to action con propósito claro */}
         <section aria-label="Acciones principales" className='responsive-box cta-buttons'>
-          <NavLink
-            to="/ingresar-codigos"
+          <button
+            onClick={handleIngresarCodigosClick}
             aria-label="Ir a la página para ingresar códigos promocionales"
             className="btn-code"
           >
-            {({ isActive }) => (
-              <span aria-current={isActive ? 'page' : undefined}>
-                Ingresá códigos
-              </span>
-            )}
-          </NavLink>
+            Ingresá códigos
+          </button>
           <NavLink
             to="/registrate"
             aria-label="Ir a la página de registro de usuario"
@@ -225,6 +235,12 @@ const Home = () => {
           </figure>
         </section>
       </main>
+
+      {/* Modal de login */}
+      <GetInto
+        isOpen={isLoginModalOpen}
+        onClose={() => setIsLoginModalOpen(false)}
+      />
     </>
   );
 };

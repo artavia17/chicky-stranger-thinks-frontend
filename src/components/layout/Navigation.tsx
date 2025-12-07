@@ -1,10 +1,12 @@
 import { NavLink } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
 import GetInto from "../GetInto";
+import { useAuth } from "../../context/AuthContext";
 
 const Navigation = () => {
+  const { isAuthenticated } = useAuth();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isCookieModalOpen, setIsCookieModalOpen] = useState(true);
+  const [isCookieModalOpen, setIsCookieModalOpen] = useState(false);
   const [isAgeVerificationModalOpen, setIsAgeVerificationModalOpen] = useState(false);
   const [isAgeRestrictionModalOpen, setIsAgeRestrictionModalOpen] = useState(false);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
@@ -18,6 +20,20 @@ const Navigation = () => {
   const cookieModalRef = useRef<HTMLDivElement>(null);
   const ageVerificationModalRef = useRef<HTMLDivElement>(null);
   const ageRestrictionModalRef = useRef<HTMLDivElement>(null);
+
+  // Verificar si el usuario ya aceptó/rechazó las cookies
+  useEffect(() => {
+    const cookiePreference = localStorage.getItem('cookie_preference');
+    const ageVerified = localStorage.getItem('age_verified');
+
+    if (!cookiePreference) {
+      // Si no hay preferencia guardada, mostrar modal de cookies
+      setIsCookieModalOpen(true);
+    } else if (cookiePreference && !ageVerified) {
+      // Si ya aceptó cookies pero no verificó edad, mostrar verificación de edad
+      setIsAgeVerificationModalOpen(true);
+    }
+  }, []);
 
   // Cerrar menú con tecla Escape
   useEffect(() => {
@@ -152,21 +168,21 @@ const Navigation = () => {
 
   // Handlers para cookies
   const handleAcceptCookies = () => {
+    localStorage.setItem('cookie_preference', 'accepted');
     setIsCookieModalOpen(false);
     setIsAgeVerificationModalOpen(true);
-    // Aquí guardarías en localStorage o cookies
   };
 
   const handleRejectCookies = () => {
+    localStorage.setItem('cookie_preference', 'rejected');
     setIsCookieModalOpen(false);
     setIsAgeVerificationModalOpen(true);
-    // Aquí guardarías la preferencia
   };
 
   // Handlers para verificación de edad
   const handleAgeYes = () => {
+    localStorage.setItem('age_verified', 'true');
     setIsAgeVerificationModalOpen(false);
-    // Continuar con la aplicación
   };
 
   const handleAgeNo = () => {
@@ -175,13 +191,6 @@ const Navigation = () => {
   };
 
   // Handlers para modal de login
-  const handleLoginSubmit = (identificationNumber: string) => {
-    // Aquí iría tu lógica de autenticación
-    console.log('Login con identificación:', identificationNumber);
-    setIsLoginModalOpen(false);
-    // Redirigir o actualizar estado de usuario autenticado
-  };
-
   const handleLoginClose = () => {
     setIsLoginModalOpen(false);
   };
@@ -250,28 +259,31 @@ const Navigation = () => {
               </NavLink>
             </li>
             <li role="listitem">
-              <button
-                type="button"
-                onClick={() => {
-                  handleNavigation();
-                  setIsLoginModalOpen(true);
-                }}
-                aria-label="Abrir modal para ingresar códigos promocionales"
-                className="nav-button"
-              >
-                Ingresá códigos
-              </button>
-              {/* <NavLink
-                to="/ingresar-codigos"
-                onClick={handleNavigation}
-                aria-label="Ir a página de ingresar códigos"
-              >
-                {({ isActive }) => (
-                  <span aria-current={isActive ? 'page' : undefined}>
-                    Ingresá códigos
-                  </span>
-                )}
-              </NavLink> */}
+              {isAuthenticated ? (
+                <NavLink
+                  to="/ingresar-codigos"
+                  onClick={handleNavigation}
+                  aria-label="Ir a página de ingresar códigos"
+                >
+                  {({ isActive }) => (
+                    <span aria-current={isActive ? 'page' : undefined}>
+                      Ingresá códigos
+                    </span>
+                  )}
+                </NavLink>
+              ) : (
+                <button
+                  type="button"
+                  onClick={() => {
+                    handleNavigation();
+                    setIsLoginModalOpen(true);
+                  }}
+                  aria-label="Abrir modal para ingresar códigos promocionales"
+                  className="nav-button"
+                >
+                  Ingresá códigos
+                </button>
+              )}
             </li>
             <li role="listitem">
               <NavLink
@@ -299,11 +311,43 @@ const Navigation = () => {
                 )}
               </NavLink>
             </li>
-            <li role="listitem">
+            {isAuthenticated ? (
+              <li role="listitem">
+                <NavLink
+                  to="/mi-perfil"
+                  onClick={handleNavigation}
+                  aria-label="Ir a mi perfil de usuario"
+                >
+                  {({ isActive }) => (
+                    <span aria-current={isActive ? 'page' : undefined}>
+                      Mi perfil
+                    </span>
+                  )}
+                </NavLink>
+              </li>
+            ) : (
+              <li role="listitem">
+                <button
+                  onClick={() => {
+                    handleNavigation();
+                    setIsLoginModalOpen(true);
+                  }}
+                  aria-label="Abrir modal de inicio de sesión"
+                  className="nav-button"
+                >
+                  Ingresar
+                </button>
+              </li>
+            )}
+          </ul>
+
+
+          {/* Enlaces adicionales fuera del menú móvil */}
+          <div className="desktop-nav responsive-box " aria-label="Acciones de usuario">
+            {isAuthenticated ? (
               <NavLink
                 to="/mi-perfil"
-                onClick={handleNavigation}
-                aria-label="Ir a mi perfil de usuario"
+                aria-label="Acceder a mi perfil de usuario"
               >
                 {({ isActive }) => (
                   <span aria-current={isActive ? 'page' : undefined}>
@@ -311,45 +355,15 @@ const Navigation = () => {
                   </span>
                 )}
               </NavLink>
-            </li>
-            <li role="listitem">
-              <NavLink
-                to="/ingresar"
-                onClick={handleNavigation}
-                aria-label="Ir a página de inicio de sesión"
+            ) : (
+              <button
+                onClick={() => setIsLoginModalOpen(true)}
+                aria-label="Abrir modal de inicio de sesión"
+                className="nav-button"
               >
-                {({ isActive }) => (
-                  <span aria-current={isActive ? 'page' : undefined}>
-                    Ingresar
-                  </span>
-                )}
-              </NavLink>
-            </li>
-          </ul>
-
-
-          {/* Enlaces adicionales fuera del menú móvil */}
-          <div className="desktop-nav responsive-box " aria-label="Acciones de usuario">
-            <NavLink
-              to="/mi-perfil"
-              aria-label="Acceder a mi perfil de usuario"
-            >
-              {({ isActive }) => (
-                <span aria-current={isActive ? 'page' : undefined}>
-                  Mi perfil
-                </span>
-              )}
-            </NavLink>
-            {/* <NavLink
-              to="/ingresar"
-              aria-label="Iniciar sesión en la aplicación"
-            >
-              {({ isActive }) => (
-                <span aria-current={isActive ? 'page' : undefined}>
-                  Ingresar
-                </span>
-              )}
-            </NavLink> */}
+                Ingresar
+              </button>
+            )}
           </div>
         </section>
       </nav>
@@ -458,7 +472,6 @@ const Navigation = () => {
       <GetInto
         isOpen={isLoginModalOpen}
         onClose={handleLoginClose}
-        onSubmit={handleLoginSubmit}
       />
     </>
   );

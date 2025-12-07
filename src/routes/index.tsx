@@ -4,6 +4,7 @@ import { Awards, Home, NotFound, Profile } from '../pages';
 import Register from '../pages/Register';
 import PromotionalCode from '../pages/PromotionalCode';
 import Winners from '../pages/Winners';
+import ProtectedRoute from '../components/ProtectedRoute';
 
 /**
  * Configuración de rutas de la aplicación
@@ -25,7 +26,11 @@ export const router = createBrowserRouter([
       },
       {
         path: 'ingresar-codigos',
-        element: <PromotionalCode />,
+        element: (
+          <ProtectedRoute>
+            <PromotionalCode />
+          </ProtectedRoute>
+        ),
       },
       {
         path: 'ganadores',
@@ -33,7 +38,11 @@ export const router = createBrowserRouter([
       },
       {
         path: 'mi-perfil',
-        element: <Profile />,
+        element: (
+          <ProtectedRoute>
+            <Profile />
+          </ProtectedRoute>
+        ),
       },
       {
         path: 'premios',

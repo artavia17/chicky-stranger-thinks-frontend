@@ -1,7 +1,13 @@
-p{
+p,
+#success-promo-code{
     font-family: $font_medium;
     color: $text-color;
     font-size: rem(15px);
+}
+
+#success-promo-code{
+    margin-top: rem(15px);
+    display: block;
 }
 
 strong{

@@ -1,21 +1,19 @@
 import { useState, useEffect, useRef } from 'react';
 import SEO from '../components/SEO';
-
-interface Winner {
-    name: string;
-    title: string;
-}
-
-interface WinnerPeriod {
-    start_date: string;
-    end_date: string;
-    winners: Winner[];
-}
+import countriesService from '../services/countries.service';
+import winnersService from '../services/winners.service';
+import type { Country, WinnerPeriod } from '../types/api';
 
 const Winners = () => {
     // Estado para el modal de selección de país
     const [isCountryModalOpen, setIsCountryModalOpen] = useState(true);
-    const [selectedCountry, setSelectedCountry] = useState('');
+    const [selectedCountry, setSelectedCountry] = useState<Country | null>(null);
+    const [countries, setCountries] = useState<Country[]>([]);
+    const [isLoadingCountries, setIsLoadingCountries] = useState(true);
+
+    // Estado para ganadores
+    const [winners, setWinners] = useState<WinnerPeriod[]>([]);
+    const [isLoadingWinners, setIsLoadingWinners] = useState(false);
 
     // Referencias para el modal
     const countryModalRef = useRef<HTMLDivElement>(null);
@@ -39,12 +37,69 @@ const Winners = () => {
         return `${startDay.toString().padStart(2, '0')} al ${endDay.toString().padStart(2, '0')} ${month} ${year}`;
     };
 
+    // Cargar países al montar el componente
+    useEffect(() => {
+        const fetchCountries = async () => {
+            try {
+                setIsLoadingCountries(true);
+                const response = await countriesService.getCountries();
+
+                if (response && response.data && Array.isArray(response.data)) {
+                    setCountries(response.data);
+
+                    // Verificar si hay un país guardado en localStorage
+                    const savedCountryId = localStorage.getItem('selectedCountryId');
+                    if (savedCountryId) {
+                        const country = response.data.find(c => c.id === parseInt(savedCountryId));
+                        if (country) {
+                            setSelectedCountry(country);
+                            setIsCountryModalOpen(false);
+                            // Cargar ganadores del país guardado
+                            loadWinners(country.id);
+                        }
+                    }
+                } else {
+                    console.error('Invalid countries response format:', response);
+                    setCountries([]);
+                }
+            } catch (error) {
+                console.error('Error loading countries:', error);
+                setCountries([]);
+            } finally {
+                setIsLoadingCountries(false);
+            }
+        };
+
+        fetchCountries();
+    }, []);
+
+    // Función para cargar ganadores
+    const loadWinners = async (countryId: number) => {
+        try {
+            setIsLoadingWinners(true);
+            const response = await winnersService.getWinners(countryId);
+
+            if (response && response.data && Array.isArray(response.data)) {
+                setWinners(response.data);
+            } else {
+                setWinners([]);
+            }
+        } catch (error) {
+            console.error('Error loading winners:', error);
+            setWinners([]);
+        } finally {
+            setIsLoadingWinners(false);
+        }
+    };
+
     // Handler para confirmar país
     const handleCountryConfirm = () => {
         if (selectedCountry) {
             setIsCountryModalOpen(false);
-            // Aquí podrías guardar la selección en localStorage
-            localStorage.setItem('selectedCountry', selectedCountry);
+            // Guardar la selección en localStorage
+            localStorage.setItem('selectedCountryId', selectedCountry.id.toString());
+            // Cargar ganadores del país seleccionado
+            loadWinners(selectedCountry.id);
         }
     };
 
@@ -93,35 +148,10 @@ const Winners = () => {
         return () => document.removeEventListener('keydown', handleTabKey);
     }, [isCountryModalOpen]);
 
-    const data: WinnerPeriod[] = [
-        {
-            start_date: "2023-01-15",
-            end_date: "2023-01-20",
-            winners: [
-                { name: "Juan Pérez", title: "Ganador 01" },
-                { name: "María Gómez", title: "Ganador 02" },
-                { name: "Carlos López", title: "Ganador 03" }
-            ]
-        },
-        {
-            start_date: "2023-02-10",
-            end_date: "2023-02-15",
-            winners: [
-                { name: "Ana Martínez", title: "Ganador 01" },
-                { name: "Luis Rodríguez", title: "Ganador 02" },
-                { name: "Sofía Fernández", title: "Ganador 03" }
-            ]
-        },
-        {
-            start_date: "2023-03-05",
-            end_date: "2023-03-10",
-            winners: [
-                { name: "Miguel Sánchez", title: "Ganador 01" },
-                { name: "Laura Torres", title: "Ganador 02" },
-                { name: "Diego Ramírez", title: "Ganador 03" }
-            ]
-        }
-    ];
+    // Handler para cambiar país
+    const handleChangeCountry = () => {
+        setIsCountryModalOpen(true);
+    };
 
     return (
         <>
@@ -150,45 +180,78 @@ const Winners = () => {
                             Cada período muestra los ganadores del sorteo correspondiente.
                         </p>
 
+                        {/* Indicador de carga */}
+                        {isLoadingWinners && (
+                            <div className="loading-message" role="status" aria-live="polite">
+                                <p>Cargando ganadores...</p>
+                            </div>
+                        )}
+
+                        {/* Mensaje cuando no hay ganadores */}
+                        {!isLoadingWinners && winners.length === 0 && !isCountryModalOpen && (
+                            <div className="no-winners-message" role="status" aria-live="polite">
+                                <p>Aún no se han seleccionado ganadores para este país.</p>
+                                <p>Revisá esta página próximamente para ver los resultados.</p>
+                            </div>
+                        )}
+
                         {/* Lista de períodos - WCAG 1.3.1 */}
-                        <div role="region" aria-label="Períodos de sorteos y ganadores">
-                            {data.map((period, index) => {
-                                const periodLabel = formatPeriod(period.start_date, period.end_date);
-
-                                return (
-                                    <article
-                                        key={index}
-                                        aria-labelledby={`period-heading-${index}`}
-                                        className="winners-period"
+                        {!isLoadingWinners && winners.length > 0 && (
+                            <>
+                                {/* Botón para cambiar país */}
+                                <div className="change-country-section">
+                                    <button
+                                        type="button"
+                                        onClick={handleChangeCountry}
+                                        aria-label="Cambiar país seleccionado"
+                                        className="btn-code"
                                     >
-                                        <div>
-                                            {/* Título del período - WCAG 2.4.6 */}
-                                            <p id={`period-heading-${index}`} className='title'>
-                                                {periodLabel}
-                                            </p>
+                                        Cambiar país
+                                    </button>
+                                </div>
 
-                                            {/* Lista de ganadores - WCAG 1.3.1 */}
-                                            <ul
-                                                id={`winners-list-${index}`}
-                                                role="list"
-                                                aria-label={`Ganadores del período ${periodLabel}`}
-                                                className='expanded'
+                                <div role="region" aria-label="Períodos de sorteos y ganadores">
+                                    {winners.map((period: WinnerPeriod, index: number) => {
+                                        const periodLabel = formatPeriod(period.start_date, period.end_date);
+
+                                        return (
+                                            <article
+                                                key={index}
+                                                aria-labelledby={`period-heading-${index}`}
+                                                className="winners-period"
                                             >
-                                                {period.winners.map((winner, wIndex) => (
-                                                    <li
-                                                        key={wIndex}
-                                                        role="listitem"
+                                                <div>
+                                                    {/* Título del período - WCAG 2.4.6 */}
+                                                    <p id={`period-heading-${index}`} className='title'>
+                                                        {periodLabel}
+                                                    </p>
+
+                                                    {/* Lista de ganadores - WCAG 1.3.1 */}
+                                                    <ul
+                                                        id={`winners-list-${index}`}
+                                                        role="list"
+                                                        aria-label={`Ganadores del período ${periodLabel}`}
+                                                        className='expanded'
                                                     >
-                                                        <strong>{winner.title}</strong>{' '}
-                                                        <p><span className="winner-name">{winner.name}</span></p>
-                                                    </li>
-                                                ))}
-                                            </ul>
-                                        </div>
-                                    </article>
-                                );
-                            })}
-                        </div>
+                                                        {period.winners.map((winner, wIndex) => (
+                                                            <li
+                                                                key={winner.id}
+                                                                role="listitem"
+                                                            >
+                                                                <strong>Ganador {wIndex + 1}</strong>{' '}
+                                                                <p>
+                                                                    <span className="winner-name">{winner.user.name}</span>
+                                                                </p>
+                                                            </li>
+                                                        ))}
+                                                    </ul>
+                                                </div>
+                                            </article>
+                                        );
+                                    })}
+                                </div>
+                            </>
+                        )}
                     </section>
                 </div>
             </main>
@@ -232,32 +295,26 @@ const Winners = () => {
                                     ref={countrySelectRef}
                                     id="country-select"
                                     name="country"
-                                    value={selectedCountry}
-                                    onChange={(e) => setSelectedCountry(e.target.value)}
+                                    value={selectedCountry?.id || ''}
+                                    onChange={(e) => {
+                                        const countryId = parseInt(e.target.value);
+                                        const country = countries.find(c => c.id === countryId);
+                                        setSelectedCountry(country || null);
+                                    }}
                                     required
                                     aria-required="true"
                                     aria-describedby="desc-country-select"
                                     autoFocus
+                                    disabled={isLoadingCountries}
                                 >
-                                    <option value="">Seleccione un país</option>
-                                    <option value="argentina">Argentina</option>
-                                    <option value="bolivia">Bolivia</option>
-                                    <option value="brasil">Brasil</option>
-                                    <option value="chile">Chile</option>
-                                    <option value="colombia">Colombia</option>
-                                    <option value="costa-rica">Costa Rica</option>
-                                    <option value="ecuador">Ecuador</option>
-                                    <option value="el-salvador">El Salvador</option>
-                                    <option value="guatemala">Guatemala</option>
-                                    <option value="honduras">Honduras</option>
-                                    <option value="mexico">México</option>
-                                    <option value="nicaragua">Nicaragua</option>
-                                    <option value="panama">Panamá</option>
-                                    <option value="paraguay">Paraguay</option>
-                                    <option value="peru">Perú</option>
-                                    <option value="republica-dominicana">República Dominicana</option>
-                                    <option value="uruguay">Uruguay</option>
-                                    <option value="venezuela">Venezuela</option>
+                                    <option value="">
+                                        {isLoadingCountries ? 'Cargando países...' : 'Seleccione un país'}
+                                    </option>
+                                    {countries && countries.length > 0 && countries.map((country) => (
+                                        <option key={country.id} value={country.id}>
+                                            {country.name}
+                                        </option>
+                                    ))}
                                 </select>
                                 <span id="desc-country-select" className="visually-hidden">
                                     Seleccione el país desde el cual está participando en la promoción

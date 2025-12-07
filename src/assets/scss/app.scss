@@ -198,3 +198,16 @@ img {
     display: none;
   }
 }
+
+#desc-identification-number{
+  text-align: left;
+  margin-top: rem(10px);
+  padding: 0 0.75rem;
+}
+
+.change-country-section{
+  margin-bottom: rem(40px);
+  button{
+    min-width: 200px;
+  }
+}

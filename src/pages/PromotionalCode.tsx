@@ -4,8 +4,11 @@ import BorderBigIcon from '../assets/img/svg/border-big.svg';
 import { useState, useRef } from 'react';
 import type { FormEvent, ChangeEvent } from 'react';
 import SEO from '../components/SEO';
+import codesService from '../services/codes.service';
+import { useAuth } from '../context/AuthContext';
 
 const PromotionalCode = () => {
+    const { refreshUser } = useAuth();
     const [promoCode, setPromoCode] = useState('');
     const [error, setError] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -27,7 +30,7 @@ const PromotionalCode = () => {
     };
 
     // Handler para envío del formulario - WCAG 3.3.1, 3.3.3
-    const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setError('');
         setSuccessMessage('');
@@ -39,9 +42,9 @@ const PromotionalCode = () => {
             return;
         }
 
-        // Validación: Longitud mínima
-        if (promoCode.length < 4) {
-            setError('El código debe tener al menos 4 caracteres');
+        // Validación: Longitud mínima (8 caracteres)
+        if (promoCode.length !== 8) {
+            setError('El código debe tener exactamente 8 caracteres');
             inputRef.current?.focus();
             return;
         }
@@ -53,16 +56,39 @@ const PromotionalCode = () => {
             return;
         }
 
-        // Simular envío
-        setIsSubmitting(true);
+        try {
+            setIsSubmitting(true);
 
-        // Aquí iría tu lógica de envío al servidor
-        setTimeout(() => {
-            setIsSubmitting(false);
+            // Enviar código al servidor
+            await codesService.submitCode({ code: promoCode });
+
+            // Actualizar datos del usuario para reflejar el nuevo código
+            await refreshUser();
+
+            // Mostrar mensaje de éxito
             setSuccessMessage('¡Código promocional ingresado exitosamente!');
             setPromoCode('');
             inputRef.current?.focus();
-        }, 1000);
+        } catch (error: any) {
+            // Manejar errores específicos
+            if (error.status === 422 && error.errors) {
+                // Error de validación
+                const firstError = Object.values(error.errors)[0];
+                setError(Array.isArray(firstError) ? firstError[0] : 'Error de validación');
+            } else if (error.status === 400) {
+                // Código ya utilizado
+                setError('Este código ya fue utilizado anteriormente');
+            } else if (error.status === 404) {
+                // Código no encontrado
+                setError('El código ingresado no es válido');
+            } else {
+                // Error genérico
+                setError('Ocurrió un error al procesar el código. Por favor intente nuevamente.');
+            }
+            inputRef.current?.focus();
+        } finally {
+            setIsSubmitting(false);
+        }
     };
 
     return (

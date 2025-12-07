@@ -1,16 +1,21 @@
 import CloseIcon from '../assets/img/svg/close.svg';
 import { useState, useEffect, useRef } from 'react';
 import type { FormEvent } from 'react';
+import { useAuth } from '../context/AuthContext';
+import { useNavigate } from 'react-router-dom';
+import authService from '../services/auth.service';
 
 interface GetIntoProps {
   isOpen: boolean;
   onClose: () => void;
-  onSubmit?: (identificationNumber: string) => void;
 }
 
-const GetInto = ({ isOpen, onClose, onSubmit }: GetIntoProps) => {
+const GetInto = ({ isOpen, onClose }: GetIntoProps) => {
+  const { login } = useAuth();
+  const navigate = useNavigate();
   const [identificationNumber, setIdentificationNumber] = useState('');
   const [error, setError] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const modalRef = useRef<HTMLDivElement>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -73,7 +78,7 @@ const GetInto = ({ isOpen, onClose, onSubmit }: GetIntoProps) => {
   }, [isOpen]);
 
   // Handler para el envío del formulario - WCAG 3.3.1
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError('');
 
@@ -83,15 +88,34 @@ const GetInto = ({ isOpen, onClose, onSubmit }: GetIntoProps) => {
       return;
     }
 
-    // Validación de formato (números solamente)
-    if (!/^\d+$/.test(identificationNumber)) {
-      setError('El número de identificación solo debe contener dígitos');
-      return;
-    }
+    try {
+      setIsSubmitting(true);
 
-    // Llamar al callback de envío
-    if (onSubmit) {
-      onSubmit(identificationNumber);
+      // Intentar hacer login
+      const response = await authService.signIn({
+        id_number: identificationNumber
+      });
+
+      // Si el login fue exitoso
+      if (response.data && response.data.token) {
+        // Guardar el token y autenticar al usuario
+        login(response.data.token);
+
+        // Cerrar el modal
+        handleClose();
+
+        // Redirigir a ingresar códigos
+        navigate('/ingresar-codigos');
+      }
+    } catch (error: any) {
+      // Manejar errores
+      if (error.status === 404) {
+        setError('Usuario no encontrado. Por favor, verifica que el número de identificación sea exactamente igual al que ingresaste al registrarte.');
+      } else {
+        setError('Ocurrió un error al intentar iniciar sesión. Por favor intente nuevamente.');
+      }
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -172,9 +196,9 @@ const GetInto = ({ isOpen, onClose, onSubmit }: GetIntoProps) => {
               inputMode="numeric"
               autoComplete="off"
             />
-            <span id="desc-identification-number" className="visually-hidden">
-              Ingrese solo números sin espacios ni caracteres especiales
-            </span>
+            <p id="desc-identification-number" className="help-text">
+              Ingresá el número de identificación exactamente igual a como lo registraste (incluyendo guiones y espacios si los tiene).
+            </p>
             {/* WCAG 3.3.1 - Mensaje de error */}
             {error && (
               <span
@@ -192,8 +216,9 @@ const GetInto = ({ isOpen, onClose, onSubmit }: GetIntoProps) => {
             type="submit"
             aria-label="Iniciar sesión con número de identificación"
             className="btn-code submit-button"
+            disabled={isSubmitting}
           >
-            Ingresar
+            {isSubmitting ? 'Ingresando...' : 'Ingresar'}
           </button>
         </form>
       </div>

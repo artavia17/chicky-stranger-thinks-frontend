@@ -1,3 +1,8 @@
+.error-message {
+    display: block;
+    color: #ff5757 !important;
+}
+
 form.normal {
     width: 100%;
 
@@ -6,6 +11,10 @@ form.normal {
       display: flex;
       flex-flow: row;
       gap: rem(20px);
+
+      .form-field{
+        margin: 0;
+      }
     }
   }
 
@@ -70,6 +79,11 @@ form.normal {
         font-size: rem(14px);
         text-wrap: balance;
         cursor: pointer;
+        user-select: none;
+
+        &:last-of-type{
+          margin-bottom: 0;
+        }
 
         span{
           cursor: pointer;
