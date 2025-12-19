@@ -4,7 +4,7 @@ import ImageHeaderDesktop from '../assets/img/webp/banner-home-desktop.webp';
 import ImageHeaderMobile from '../assets/img/webp/banner-home-mobile.webp';
 import BorderIcon from '../assets/img/svg/border.svg';
 import BorderBigIcon from '../assets/img/svg/border-big.svg';
-import ChickyEmpaque from '../assets/img/webp/chicky-empaque.webp';
+import ChickyEmpaque from '../assets/img/webp/chiky-empaque.webp';
 import Mochilas from '../assets/img/webp/mochilas.webp';
 import SEO from '../components/SEO';
 import GetInto from '../components/GetInto';

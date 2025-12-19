@@ -1,4 +1,4 @@
-import ChickyLogo from '../assets/img/webp/chicky-logo.webp';
+import ChickyLogo from '../assets/img/webp/chiky-logo.webp';
 import BorderIcon from '../assets/img/svg/border.svg';
 import BorderBigIcon from '../assets/img/svg/border-big.svg';
 import { useState, useEffect, useRef, useCallback } from 'react';
@@ -327,7 +327,7 @@ const Register = () => {
                             src={ChickyLogo}
                             alt="Logotipo de Chiky"
                             loading="lazy"
-                            className="chicky-logo"
+                            className="chiky-logo"
                         />
 
                         {/* WCAG 3.3.1, 3.3.2 - Formulario accesible */}
@@ -554,7 +554,7 @@ const Register = () => {
                                         onChange={(e) => setShowCommunicationChannels(e.target.checked)}
                                     />
                                     <label htmlFor="communicationsConsent">
-                                        <span>Autorizo recibir comunicaciones sobre actividades, eventos y promociones de la marca Chicky.</span>
+                                        <span>Autorizo recibir comunicaciones sobre actividades, eventos y promociones de la marca Chiky.</span>
                                         <span className="required-indicator" aria-label="campo obligatorio">*</span>
                                     </label>
                                     <span id="desc-communications-consent" className="visually-hidden">
@@ -592,7 +592,7 @@ const Register = () => {
                                                 <span>Autorizo ser contactado por WhatsApp</span>
                                             </label>
                                             <span id="desc-whatsapp" className="visually-hidden">
-                                                Recibirá mensajes de WhatsApp sobre promociones y eventos de Chicky
+                                                Recibirá mensajes de WhatsApp sobre promociones y eventos de Chiky
                                             </span>
                                         </div>
 
@@ -608,7 +608,7 @@ const Register = () => {
                                                 <span>Autorizo ser contactado por teléfono</span>
                                             </label>
                                             <span id="desc-phone" className="visually-hidden">
-                                                Recibirá llamadas telefónicas sobre promociones y eventos de Chicky
+                                                Recibirá llamadas telefónicas sobre promociones y eventos de Chiky
                                             </span>
                                         </div>
 
@@ -624,7 +624,7 @@ const Register = () => {
                                                 <span>Autorizo ser contactado por correo electrónico</span>
                                             </label>
                                             <span id="desc-email" className="visually-hidden">
-                                                Recibirá correos electrónicos sobre promociones y eventos de Chicky
+                                                Recibirá correos electrónicos sobre promociones y eventos de Chiky
                                             </span>
                                         </div>
 
@@ -640,7 +640,7 @@ const Register = () => {
                                                 <span>Autorizo ser contactado por SMS</span>
                                             </label>
                                             <span id="desc-sms" className="visually-hidden">
-                                                Recibirá mensajes de texto SMS sobre promociones y eventos de Chicky
+                                                Recibirá mensajes de texto SMS sobre promociones y eventos de Chiky
                                             </span>
                                         </div>
                                     </div>
