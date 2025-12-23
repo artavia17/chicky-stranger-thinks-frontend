@@ -25,6 +25,7 @@ export const API_ENDPOINTS = {
 
     // Awards
     AWARDS: '/awards',
+    PRIZE_STATS: '/prize-stats',
 
     // Promotional Codes
     PROMOTIONAL_CODES: '/promotional-codes',

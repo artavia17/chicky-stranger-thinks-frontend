@@ -383,7 +383,7 @@ const Navigation = () => {
               Aviso de cookies
             </h2>
             <p id="cookie-modal-description" className="txt-medium">
-              Al hacer clic en "Aceptar todas las cookies", acepta que las cookies se guardan en su dispositivo para mejorar la navegación del sitio, analizar el uso del mismo, y colaborar con nuestros estudios para marketing. Ver política de tratamiento de datos personales.
+              Al hacer clic en “Aceptar todas las cookies”, aceptás que las cookies se almacenen en tu dispositivo para mejorar la navegación del sitio, analizar su uso y colaborar con nuestros estudios con fines de marketing. Ver la política de tratamiento de datos personales.
             </p>
             <div role="group" aria-label="Opciones de cookies" className="cookie-buttons">
               <button

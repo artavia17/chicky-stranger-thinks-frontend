@@ -179,7 +179,7 @@ const GetInto = ({ isOpen, onClose }: GetIntoProps) => {
         >
           <div className="form-field">
             <label htmlFor="identification-number">
-              <span>N.º identificación</span>
+              <span>N.° de identificación</span>
               <span className="required-indicator" aria-label="campo obligatorio">*</span>
             </label>
             <input

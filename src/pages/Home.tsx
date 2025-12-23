@@ -1,19 +1,36 @@
 import { NavLink, useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import ImageHeaderDesktop from '../assets/img/webp/banner-home-desktop.webp';
 import ImageHeaderMobile from '../assets/img/webp/banner-home-mobile.webp';
 import BorderIcon from '../assets/img/svg/border.svg';
 import BorderBigIcon from '../assets/img/svg/border-big.svg';
-import ChickyEmpaque from '../assets/img/webp/chiky-empaque.webp';
+import ChickyEmpaque from '../assets/img/webp/chicky-empaque.webp';
 import Mochilas from '../assets/img/webp/mochilas.webp';
 import SEO from '../components/SEO';
 import GetInto from '../components/GetInto';
 import { useAuth } from '../context/AuthContext';
+import countriesService from '../services/countries.service';
+import prizesService from '../services/prizes.service';
+import type { Country, PrizeStatsResponse } from '../types/api';
 
 const Home = () => {
   const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+
+  // Estados para el modal de selección de país
+  const [isCountryModalOpen, setIsCountryModalOpen] = useState(false);
+  const [selectedCountry, setSelectedCountry] = useState<Country | null>(null);
+  const [countries, setCountries] = useState<Country[]>([]);
+  const [isLoadingCountries, setIsLoadingCountries] = useState(true);
+
+  // Estados para estadísticas de premios
+  const [prizeStats, setPrizeStats] = useState<PrizeStatsResponse['data'] | null>(null);
+  const [isLoadingStats, setIsLoadingStats] = useState(false);
+
+  // Referencias para el modal
+  const countryModalRef = useRef<HTMLDivElement>(null);
+  const countrySelectRef = useRef<HTMLSelectElement>(null);
 
   const handleIngresarCodigosClick = () => {
     if (isAuthenticated) {
@@ -22,6 +39,122 @@ const Home = () => {
       setIsLoginModalOpen(true);
     }
   };
+
+  // Cargar países al montar el componente
+  useEffect(() => {
+    const fetchCountries = async () => {
+      try {
+        setIsLoadingCountries(true);
+        const response = await countriesService.getCountries();
+
+        if (response && response.data && Array.isArray(response.data)) {
+          setCountries(response.data);
+
+          // Verificar si hay un país guardado en localStorage
+          const savedCountryId = localStorage.getItem('selectedCountryIdHome');
+          if (savedCountryId) {
+            const country = response.data.find(c => c.id === parseInt(savedCountryId));
+            if (country) {
+              setSelectedCountry(country);
+              // Cargar estadísticas del país guardado
+              loadPrizeStats(country.id);
+            } else {
+              // Si no hay país guardado, abrir modal
+              setIsCountryModalOpen(true);
+            }
+          } else {
+            // Si no hay país guardado, abrir modal
+            setIsCountryModalOpen(true);
+          }
+        } else {
+          console.error('Invalid countries response format:', response);
+          setCountries([]);
+        }
+      } catch (error) {
+        console.error('Error loading countries:', error);
+        setCountries([]);
+      } finally {
+        setIsLoadingCountries(false);
+      }
+    };
+
+    fetchCountries();
+  }, []);
+
+  // Función para cargar estadísticas de premios
+  const loadPrizeStats = async (countryId: number) => {
+    try {
+      setIsLoadingStats(true);
+      const response = await prizesService.getPrizeStats(countryId);
+
+      if (response && response.data) {
+        setPrizeStats(response.data);
+      } else {
+        setPrizeStats(null);
+      }
+    } catch (error) {
+      console.error('Error loading prize stats:', error);
+      setPrizeStats(null);
+    } finally {
+      setIsLoadingStats(false);
+    }
+  };
+
+  // Handler para confirmar país
+  const handleCountryConfirm = () => {
+    if (selectedCountry) {
+      setIsCountryModalOpen(false);
+      // Guardar la selección en localStorage
+      localStorage.setItem('selectedCountryIdHome', selectedCountry.id.toString());
+      // Cargar estadísticas del país seleccionado
+      loadPrizeStats(selectedCountry.id);
+    }
+  };
+
+  // Prevenir scroll cuando el modal está abierto - WCAG 2.4.3
+  useEffect(() => {
+    if (isCountryModalOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isCountryModalOpen]);
+
+  // Focus trap en el modal - WCAG 2.4.3
+  useEffect(() => {
+    if (!isCountryModalOpen || !countryModalRef.current) return;
+
+    const focusableElements = countryModalRef.current.querySelectorAll(
+      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+    );
+    const firstElement = focusableElements[0] as HTMLElement;
+    const lastElement = focusableElements[focusableElements.length - 1] as HTMLElement;
+
+    const handleTabKey = (e: KeyboardEvent) => {
+      if (e.key !== 'Tab') return;
+
+      if (e.shiftKey) {
+        if (document.activeElement === firstElement) {
+          lastElement?.focus();
+          e.preventDefault();
+        }
+      } else {
+        if (document.activeElement === lastElement) {
+          firstElement?.focus();
+          e.preventDefault();
+        }
+      }
+    };
+
+    document.addEventListener('keydown', handleTabKey);
+    countrySelectRef.current?.focus();
+
+    return () => document.removeEventListener('keydown', handleTabKey);
+  }, [isCountryModalOpen]);
   return (
     <>
       {/* SEO Optimization */}
@@ -174,55 +307,64 @@ const Home = () => {
               Quedan pocas unidades
             </h2>
 
+            {/* Indicador de carga */}
+            {isLoadingStats && (
+              <div className="loading-message" role="status" aria-live="polite">
+                <p>Cargando estadísticas...</p>
+              </div>
+            )}
+
             {/* WCAG 4.1.2 - Campos de solo lectura con aria-readonly */}
-            <div role="group" aria-labelledby="contadores-heading">
-              <h3 id="contadores-heading" className="visually-hidden">
-                Contadores de códigos promocionales
-              </h3>
+            {!isLoadingStats && prizeStats && (
+              <div role="group" aria-labelledby="contadores-heading">
+                <h3 id="contadores-heading" className="visually-hidden">
+                  Contadores de premios disponibles
+                </h3>
 
-              <section className='stat'>
-                <div className="stat-item">
-                  <label htmlFor="codigos-totales" id="label-codigos-totales">
-                    Códigos totales
-                  </label>
-                  <input
-                    type="text"
-                    value="100"
-                    id="codigos-totales"
-                    aria-labelledby="label-codigos-totales"
-                    aria-readonly="true"
-                    readOnly
-                    tabIndex={-1}
-                    aria-describedby="desc-codigos-totales"
-                    disabled
-                  />
-                  <span id="desc-codigos-totales" className="visually-hidden">
-                    Número total de códigos promocionales disponibles en la campaña
-                  </span>
-                </div>
+                <section className='stat'>
+                  <div className="stat-item">
+                    <label htmlFor="premios-totales" id="label-premios-totales">
+                      Premios totales
+                    </label>
+                    <input
+                      type="text"
+                      value={prizeStats.summary.total_prizes.toString()}
+                      id="premios-totales"
+                      aria-labelledby="label-premios-totales"
+                      aria-readonly="true"
+                      readOnly
+                      tabIndex={-1}
+                      aria-describedby="desc-premios-totales"
+                      disabled
+                    />
+                    <span id="desc-premios-totales" className="visually-hidden">
+                      Número total de premios disponibles en la campaña
+                    </span>
+                  </div>
 
-                <div className="stat-item">
-                  <label htmlFor="codigos-sin-canjear" id="label-codigos-sin-canjear">
-                    Códigos sin canjear
-                  </label>
-                  <input
-                    type="text"
-                    value="10"
-                    id="codigos-sin-canjear"
-                    aria-labelledby="label-codigos-sin-canjear"
-                    aria-readonly="true"
-                    readOnly
-                    tabIndex={-1}
-                    aria-describedby="desc-codigos-sin-canjear"
-                    aria-live="polite"
-                    disabled
-                  />
-                  <span id="desc-codigos-sin-canjear" className="visually-hidden">
-                    Número de códigos promocionales aún disponibles para canjear por premios
-                  </span>
-                </div>
-              </section>
-            </div>
+                  <div className="stat-item">
+                    <label htmlFor="premios-sin-canjear" id="label-premios-sin-canjear">
+                      Premios sin canjear
+                    </label>
+                    <input
+                      type="text"
+                      value={prizeStats.summary.total_remaining.toString()}
+                      id="premios-sin-canjear"
+                      aria-labelledby="label-premios-sin-canjear"
+                      aria-readonly="true"
+                      readOnly
+                      tabIndex={-1}
+                      aria-describedby="desc-premios-sin-canjear"
+                      aria-live="polite"
+                      disabled
+                    />
+                    <span id="desc-premios-sin-canjear" className="visually-hidden">
+                      Número de premios aún disponibles para canjear
+                    </span>
+                  </div>
+                </section>
+              </div>
+            )}
           </div>
 
           {/* WCAG 1.1.1 - Imagen de premios */}
@@ -241,6 +383,85 @@ const Home = () => {
         isOpen={isLoginModalOpen}
         onClose={() => setIsLoginModalOpen(false)}
       />
+
+      {/* Modal de selección de país - WCAG 2.4.3, 4.1.2 */}
+      {isCountryModalOpen && (
+        <div
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="country-modal-title"
+          aria-describedby="country-modal-description"
+          className="modal-overlay country-modal-overlay"
+          ref={countryModalRef}
+        >
+          <div className="modal-content country-modal-content" role="document">
+            {/* Título del modal - WCAG 2.4.6 */}
+            <h2 id="country-modal-title">
+              Seleccione su país
+            </h2>
+
+            {/* Descripción - WCAG 1.3.1 */}
+            <p id="country-modal-description">
+              Para mostrar las estadísticas de premios correspondientes a su región, por favor seleccione su país:
+            </p>
+
+            {/* Formulario de selección - WCAG 3.3.2 */}
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                handleCountryConfirm();
+              }}
+              aria-label="Formulario de selección de país"
+              className='normal'
+            >
+              <div className="form-field">
+                <label htmlFor="country-select">
+                  <span>País:</span>
+                  <span className="required-indicator" aria-label="campo obligatorio">*</span>
+                </label>
+                <select
+                  ref={countrySelectRef}
+                  id="country-select"
+                  name="country"
+                  value={selectedCountry?.id || ''}
+                  onChange={(e) => {
+                    const countryId = parseInt(e.target.value);
+                    const country = countries.find(c => c.id === countryId);
+                    setSelectedCountry(country || null);
+                  }}
+                  required
+                  aria-required="true"
+                  aria-describedby="desc-country-select"
+                  autoFocus
+                  disabled={isLoadingCountries}
+                >
+                  <option value="">
+                    {isLoadingCountries ? 'Cargando países...' : 'Seleccione un país'}
+                  </option>
+                  {countries && countries.length > 0 && countries.map((country) => (
+                    <option key={country.id} value={country.id}>
+                      {country.name}
+                    </option>
+                  ))}
+                </select>
+                <span id="desc-country-select" className="visually-hidden">
+                  Seleccione el país desde el cual está participando en la promoción
+                </span>
+              </div>
+
+              {/* Botón de confirmación - WCAG 2.5.3 */}
+              <button
+                type="submit"
+                disabled={!selectedCountry}
+                aria-label={selectedCountry ? 'Confirmar país seleccionado' : 'Seleccione un país para continuar'}
+                className="btn-code"
+              >
+                Confirmar
+              </button>
+            </form>
+          </div>
+        </div>
+      )}
     </>
   );
 };

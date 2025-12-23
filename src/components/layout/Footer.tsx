@@ -1,6 +1,6 @@
 import { NavLink } from 'react-router-dom';
 import ArrowRightIcon from '../../assets/img/svg/arrow.right.circle.svg';
-import ChickyLogo from '../../assets/img/webp/chiky-logo.webp';
+import ChickyLogo from '../../assets/img/webp/chicky-logo.webp';
 import FacebookLogo from '../../assets/img/svg/facebook-logo.svg';
 import InstagramLogo from '../../assets/img/svg/instagram-logo.svg';
 

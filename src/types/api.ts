@@ -148,6 +148,34 @@ export interface Award {
     quantity?: number;
 }
 
+export interface PrizeStats {
+    prize: {
+        id: number;
+        name: string;
+    };
+    total: number;
+    awarded: number;
+    remaining: number;
+}
+
+export interface PrizeStatsResponse {
+    status: number;
+    message: string;
+    data: {
+        country: {
+            id: number;
+            name: string;
+            iso_code: string;
+        };
+        summary: {
+            total_prizes: number;
+            total_awarded: number;
+            total_remaining: number;
+        };
+        prizes: PrizeStats[];
+    };
+}
+
 export interface PromotionalCode {
     id: number;
     code: string;

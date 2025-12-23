@@ -1,4 +1,4 @@
-import ChickyLogo from '../assets/img/webp/chiky-logo.webp';
+import ChickyLogo from '../assets/img/webp/chicky-logo.webp';
 import BorderIcon from '../assets/img/svg/border.svg';
 import BorderBigIcon from '../assets/img/svg/border-big.svg';
 import { useState, useEffect, useRef, useCallback } from 'react';
@@ -325,7 +325,7 @@ const Register = () => {
                         {/* WCAG 1.1.1 - Logo descriptivo */}
                         <img
                             src={ChickyLogo}
-                            alt="Logotipo de Chiky"
+                            alt="Logotipo de Chiky" 
                             loading="lazy"
                             className="chiky-logo"
                         />
@@ -471,7 +471,7 @@ const Register = () => {
 
                                 <div className="form-field">
                                     <label htmlFor="numero-identificacion">
-                                        <span>N.º identificación</span>
+                                        <span>N.° de identificación</span>
                                         <span className="required-indicator" aria-label="campo obligatorio">*</span>
                                     </label>
                                     <input
