@@ -269,7 +269,7 @@ const Winners = () => {
                     <div className="modal-content country-modal-content" role="document">
                         {/* Título del modal - WCAG 2.4.6 */}
                         <h2 id="country-modal-title">
-                            Seleccione su país
+                            Seleccioná tu país
                         </h2>
 
                         {/* Descripción - WCAG 1.3.1 */}

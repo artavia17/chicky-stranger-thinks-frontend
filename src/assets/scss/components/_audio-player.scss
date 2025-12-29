@@ -1,0 +1,80 @@
+// Audio Player - Botón flotante de control de música
+.audio-control-button {
+    position: fixed;
+    bottom: rem(20px);
+    right: rem(20px);
+    width: rem(60px);
+    height: rem(60px);
+    border-radius: 50%;
+    background: linear-gradient(135deg, #ff0000 0%, #cc0000 100%);
+    border: 3px solid #fff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    z-index: 9999;
+    color: #fff;
+
+    // Hover effect
+    &:hover {
+        transform: scale(1.1);
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+        background: linear-gradient(135deg, #cc0000 0%, #990000 100%);
+    }
+
+    // Active/pressed effect
+    &:active {
+        transform: scale(0.95);
+    }
+
+    // Focus visible para accesibilidad
+    &:focus-visible {
+        outline: 3px solid #ffeb3b;
+        outline-offset: 2px;
+    }
+
+    // SVG icon
+    svg {
+        width: rem(28px);
+        height: rem(28px);
+        fill: currentColor;
+    }
+
+    // Estado cuando está pausado
+    &[aria-pressed="false"] {
+        background: linear-gradient(135deg, #666 0%, #444 100%);
+
+        &:hover {
+            background: linear-gradient(135deg, #777 0%, #555 100%);
+        }
+    }
+
+    // Responsive
+    @media (max-width: 768px) {
+        width: rem(50px);
+        height: rem(50px);
+        bottom: rem(15px);
+        right: rem(15px);
+
+        svg {
+            width: rem(24px);
+            height: rem(24px);
+        }
+    }
+}
+
+// Animación de pulso cuando está reproduciendo
+@keyframes audio-pulse {
+    0%, 100% {
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+    50% {
+        box-shadow: 0 4px 16px rgba(255, 0, 0, 0.5);
+    }
+}
+
+.audio-control-button[aria-pressed="true"] {
+    animation: audio-pulse 2s ease-in-out infinite;
+}

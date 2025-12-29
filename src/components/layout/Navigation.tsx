@@ -6,8 +6,19 @@ import { useAuth } from "../../context/AuthContext";
 const Navigation = () => {
   const { isAuthenticated } = useAuth();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isCookieModalOpen, setIsCookieModalOpen] = useState(false);
-  const [isAgeVerificationModalOpen, setIsAgeVerificationModalOpen] = useState(false);
+
+  // Inicializar estados de modales basados en localStorage - evita setState en useEffect
+  const [isCookieModalOpen, setIsCookieModalOpen] = useState(() => {
+    const cookiePreference = localStorage.getItem('cookie_preference');
+    return !cookiePreference; // Mostrar modal si no hay preferencia
+  });
+
+  const [isAgeVerificationModalOpen, setIsAgeVerificationModalOpen] = useState(() => {
+    const cookiePreference = localStorage.getItem('cookie_preference');
+    const ageVerified = localStorage.getItem('age_verified');
+    return !!(cookiePreference && !ageVerified); // Mostrar si aceptó cookies pero no verificó edad
+  });
+
   const [isAgeRestrictionModalOpen, setIsAgeRestrictionModalOpen] = useState(false);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
@@ -20,20 +31,6 @@ const Navigation = () => {
   const cookieModalRef = useRef<HTMLDivElement>(null);
   const ageVerificationModalRef = useRef<HTMLDivElement>(null);
   const ageRestrictionModalRef = useRef<HTMLDivElement>(null);
-
-  // Verificar si el usuario ya aceptó/rechazó las cookies
-  useEffect(() => {
-    const cookiePreference = localStorage.getItem('cookie_preference');
-    const ageVerified = localStorage.getItem('age_verified');
-
-    if (!cookiePreference) {
-      // Si no hay preferencia guardada, mostrar modal de cookies
-      setIsCookieModalOpen(true);
-    } else if (cookiePreference && !ageVerified) {
-      // Si ya aceptó cookies pero no verificó edad, mostrar verificación de edad
-      setIsAgeVerificationModalOpen(true);
-    }
-  }, []);
 
   // Cerrar menú con tecla Escape
   useEffect(() => {
@@ -253,7 +250,7 @@ const Navigation = () => {
               >
                 {({ isActive }) => (
                   <span aria-current={isActive ? 'page' : undefined}>
-                    Regístrate
+                    Registrate
                   </span>
                 )}
               </NavLink>
@@ -335,7 +332,7 @@ const Navigation = () => {
                   aria-label="Abrir modal de inicio de sesión"
                   className="nav-button"
                 >
-                  Ingresar
+                  Mi Perfil
                 </button>
               </li>
             )}

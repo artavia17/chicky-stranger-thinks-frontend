@@ -32,8 +32,8 @@ header.home {
 
     .steps-list {
       display: grid;
-      grid-template-columns: repeat(3, calc(33.33% - rem(20px)));
-      gap: rem(20px);
+      grid-template-columns: repeat(4, calc(25% - rem(20px)));
+      gap: rem(15px);
       justify-items: center;
 
       @include bp(laptop) {
@@ -73,6 +73,7 @@ header.home {
       strong {
         font-size: rem(10px);
         text-align: center;
+        text-wrap: balance;
 
         @include bp(laptop) {
           font-size: rem(18px);

@@ -52,6 +52,13 @@ form.normal {
 
     select{
       cursor: pointer;
+
+      // Asegurar que las opciones tengan buen contraste en todos los navegadores
+      option {
+        background-color: #fff;
+        color: #000;
+        padding: rem(8px);
+      }
     }
 
     select {

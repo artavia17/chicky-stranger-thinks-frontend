@@ -42,9 +42,9 @@ const PromotionalCode = () => {
             return;
         }
 
-        // Validación: Longitud mínima (8 caracteres)
-        if (promoCode.length !== 8) {
-            setError('El código debe tener exactamente 8 caracteres');
+        // Validación: Longitud entre 4 y 30 caracteres
+        if (promoCode.length < 4 || promoCode.length > 30) {
+            setError('El código debe tener entre 4 y 30 caracteres');
             inputRef.current?.focus();
             return;
         }
@@ -141,7 +141,7 @@ const PromotionalCode = () => {
                                                 : 'desc-promo-code'
                                     }
                                     autoComplete="off"
-                                    maxLength={20}
+                                    maxLength={30}
                                     pattern="[A-Z0-9]+"
                                 />
 

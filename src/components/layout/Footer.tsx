@@ -11,26 +11,24 @@ const Footer = () => {
 
             {/* Reglamento - WCAG 2.4.4 */}
             <nav aria-label="Enlaces legales principales" className="footer-reglamento-nav">
-                <NavLink
-                    to="/reglamento"
+                <a
+                    href="/pdf/reglamento.pdf"
+                    target="_blank"
+                    rel="noopener noreferrer"
                     aria-label="Ver reglamento completo de la promoción"
                     className="reglamento-link"
                 >
-                    {({ isActive }) => (
-                        <>
-                            <span aria-current={isActive ? 'page' : undefined}>
-                                Ver reglamento
-                            </span>
-                            {/* WCAG 1.1.1 - Icono decorativo */}
-                            <img
-                                src={ArrowRightIcon}
-                                alt=""
-                                aria-hidden="true"
-                                role="presentation"
-                            />
-                        </>
-                    )}
-                </NavLink>
+                    <span>
+                        Ver reglamento
+                    </span>
+                    {/* WCAG 1.1.1 - Icono decorativo */}
+                    <img
+                        src={ArrowRightIcon}
+                        alt=""
+                        aria-hidden="true"
+                        role="presentation"
+                    />
+                </a>
             </nav>
 
             {/* WCAG 1.3.1 - Contenedor del footer */}
@@ -58,7 +56,8 @@ const Footer = () => {
                         {/* Enlaces legales - WCAG 2.4.4, 3.2.5 */}
                         <li>
                             <a
-                                href="#terminos-condiciones"
+                                href="/pdf/terminos.pdf"
+                                target='_black'
                                 aria-label="Leer términos y condiciones de la promoción"
                             >
                                 Términos y condiciones
@@ -79,7 +78,7 @@ const Footer = () => {
                         {/* Redes sociales - WCAG 2.4.4, 1.1.1 */}
                         <li>
                             <a
-                                href="https://www.facebook.com/ChikyOficial"
+                                href="https://www.facebook.com/GalletasChikyCAM"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 aria-label="Visitar página de Facebook de Chiky (se abre en nueva pestaña)"
@@ -96,7 +95,7 @@ const Footer = () => {
                         </li>
                         <li>
                             <a
-                                href="https://www.instagram.com/chikyoficial"
+                                href="https://www.instagram.com/galletaschiky/"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 aria-label="Visitar perfil de Instagram de Chiky (se abre en nueva pestaña)"
