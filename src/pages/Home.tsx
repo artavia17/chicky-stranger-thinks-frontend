@@ -6,8 +6,11 @@ import BorderIcon from '../assets/img/svg/border.svg';
 import BorderBigIcon from '../assets/img/svg/border-big.svg';
 import ChickyEmpaque from '../assets/img/webp/chicky-empaque.webp';
 import Mochilas from '../assets/img/webp/mochilas.webp';
+import ChickyLogo from '../assets/img/webp/chicky-logo.webp';
+// import CharacterImg from '../assets/img/webp/character.webp';
 import SEO from '../components/SEO';
 import GetInto from '../components/GetInto';
+import RegisterForm from '../components/RegisterForm';
 import { useAuth } from '../context/AuthContext';
 import countriesService from '../services/countries.service';
 import prizesService from '../services/prizes.service';
@@ -199,17 +202,15 @@ const Home = () => {
           >
             Ingresá códigos
           </button>
-          <NavLink
-            to="/registrate"
+          <a
+            href="#register"
             aria-label="Ir a la página de registro de usuario"
             className="btn-code"
           >
-            {({ isActive }) => (
-              <span aria-current={isActive ? 'page' : undefined}>
-                Regístrate
+              <span>
+                Registrate
               </span>
-            )}
-          </NavLink>
+          </a>
         </section>
       </header>
 
@@ -250,7 +251,7 @@ const Home = () => {
                 </div>
               </div>
               <p>
-                <strong>COMPRÁ<br />CHIKY</strong>
+                <strong>COMPRÁ LAS<br />CHIKY MARCADAS</strong>
               </p>
             </li>
             <li>
@@ -260,14 +261,14 @@ const Home = () => {
                 </div>
               </div>
               <p>
-                <strong>REGISTRÁ</strong> <br/> LOS CÓDIGOS EN <br />
+                <strong>REGISTRÁ</strong> <br/> LOS CÓDIGOS<br />
                 <NavLink
-                  to="/"
+                  to="/ingresar-codigos"
                   aria-label="Ir a la página principal de chikystrangerthings.com"
                 >
                   {({ isActive }) => (
                     <span aria-current={isActive ? 'page' : undefined}>
-                      chikystrangerthings.com
+                      aquí
                     </span>
                   )}
                 </NavLink>
@@ -281,6 +282,16 @@ const Home = () => {
               </div>
               <p>
                 GANÁ <strong>MOCHILAS, LONCHERAS Y CARTUCHERAS</strong>
+              </p>
+            </li>
+            <li>
+              <div className="step-number" aria-label="Paso 3">
+                <div>
+                  <h2 aria-hidden="true">4</h2>
+                </div>
+              </div>
+              <p>
+                GUARDÁ LOS EMPAQUES, <br/> <strong>PARA RECLAMAR TU PREMIO</strong>
               </p>
             </li>
           </ol>
@@ -378,6 +389,54 @@ const Home = () => {
         </section>
       </main>
 
+      {/* WCAG 1.1.1 - Imagen decorativa */}
+      <figure className="decorative-border responsive-box " aria-hidden="true">
+        <img
+          src={BorderIcon}
+          alt=""
+          aria-hidden="true"
+          role="presentation"
+          className='mobile'
+        />
+        <img
+          src={BorderBigIcon}
+          alt=""
+          aria-hidden="true"
+          role="presentation"
+          className='desktop'
+        />
+      </figure>
+
+      {/* Sección de registro - WCAG 1.3.1, 2.4.6 */}
+      <section aria-labelledby="registro-heading" className="register-page responsive-box" id="register">
+        <h1 id="registro-heading">REGISTRATE Y GANÁ</h1>
+
+        <div className="register-form-section">
+          <h2 className="visually-hidden">
+            Formulario de registro de usuario
+          </h2>
+
+          {/* WCAG 1.1.1 - Imagen descriptiva */}
+          {/* <img
+            src={CharacterImg}
+            alt="Personaje de Stranger Things"
+            loading="lazy"
+            className="character-image"
+          /> */}
+
+          {/* WCAG 1.1.1 - Logo descriptivo */}
+          <img
+            src={ChickyLogo}
+            alt="Logotipo de Chiky"
+            loading="lazy"
+            className="chicky-logo"
+          />
+
+          {/* Componente de formulario de registro */}
+          <RegisterForm />
+        </div>
+      </section>
+
       {/* Modal de login */}
       <GetInto
         isOpen={isLoginModalOpen}
@@ -397,7 +456,7 @@ const Home = () => {
           <div className="modal-content country-modal-content" role="document">
             {/* Título del modal - WCAG 2.4.6 */}
             <h2 id="country-modal-title">
-              Seleccione su país
+              Seleccioná tu país
             </h2>
 
             {/* Descripción - WCAG 1.3.1 */}
