@@ -3,7 +3,6 @@ import backgroundMusic from '../assets/music/music.mp3';
 
 const AudioPlayer = () => {
     const [isPlaying, setIsPlaying] = useState(false);
-    const [isMuted, setIsMuted] = useState(false);
     const audioRef = useRef<HTMLAudioElement>(null);
     const hasTriedAutoplay = useRef(false);
 
@@ -79,15 +78,6 @@ const AudioPlayer = () => {
             });
             setIsPlaying(true);
         }
-    };
-
-    // Toggle mute
-    const toggleMute = () => {
-        const audio = audioRef.current;
-        if (!audio) return;
-
-        audio.muted = !isMuted;
-        setIsMuted(!isMuted);
     };
 
     return (
