@@ -128,3 +128,13 @@ form.normal {
     }
   }
 }
+
+
+.register-form-section{
+  @include bp(laptop) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-flow: column;
+  }
+}

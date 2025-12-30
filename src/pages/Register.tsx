@@ -41,7 +41,7 @@ const Register = () => {
                     {/* Formulario para registrarse - WCAG 3.3.2 */}
                     <h1 id="register-heading">REGISTRATE Y GANÁ</h1>
 
-                    <section aria-labelledby="register-form-section">
+                    <section aria-labelledby="register-form-section" className='register-form-section'>
                         <h2 id="register-form-section" className="visually-hidden">
                             Formulario de registro de usuario
                         </h2>
