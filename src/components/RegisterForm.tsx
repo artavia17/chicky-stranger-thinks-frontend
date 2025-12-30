@@ -601,7 +601,7 @@ const RegisterForm = () => {
                             aria-describedby={formErrors.data_treatment_accepted ? 'error-data-policy-consent' : undefined}
                         />
                         <label htmlFor="dataPolicyConsent">
-                            <span>Autorizo la <a href="#politica-datos" target="_blank" rel="noopener noreferrer">política de tratamiento de datos</a>.</span>
+                            <span>Autorizo la <a href="/pdf/politicas.pdf" target="_blank" rel="noopener noreferrer">política de tratamiento de datos</a>.</span>
                             <span className="required-indicator" aria-label="campo obligatorio">*</span>
                         </label>
                         {formErrors.data_treatment_accepted && (
