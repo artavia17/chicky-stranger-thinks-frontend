@@ -120,7 +120,7 @@ const PromotionalCode = () => {
                         >
                             <div className="form-field">
                                 <label htmlFor="promo-code">
-                                    <span>Ingrese su código promocional:</span>
+                                    <span>Ingresá tu código promocional:</span>
                                     <span className="required-indicator" aria-label="campo obligatorio">*</span>
                                 </label>
                                 <input

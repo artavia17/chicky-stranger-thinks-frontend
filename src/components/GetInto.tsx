@@ -167,7 +167,7 @@ const GetInto = ({ isOpen, onClose }: GetIntoProps) => {
         </h3>
 
         <p id="login-modal-description" className="visually-hidden">
-          Ingrese su número de identificación para acceder a su perfil
+          Ingresá tu número de identificación para acceder a su perfil
         </p>
 
         {/* Formulario de inicio de sesión - WCAG 3.3.1, 3.3.2 */}

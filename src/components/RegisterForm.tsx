@@ -437,7 +437,7 @@ const RegisterForm = () => {
                                     ? 'Seleccione tipo de identificación'
                                     : identificationType === 'na' && selectedCountry
                                     ? `Formato: ${selectedCountry.id_format}`
-                                    : 'Ingrese su número de identificación'
+                                    : 'Ingresá tu número de identificación'
                             }
                         />
                         {formErrors.id_number && (
