@@ -131,6 +131,12 @@ export interface Winner {
 export interface WinnerPeriod {
     start_date: string;
     end_date: string;
+    period: {
+        id: number; 
+        name: string; 
+        start_date: string; 
+        end_date: string;
+    };
     winners: Winner[];
 }
 

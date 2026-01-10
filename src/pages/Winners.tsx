@@ -212,7 +212,7 @@ const Winners = () => {
 
                                 <div role="region" aria-label="Períodos de sorteos y ganadores">
                                     {winners.map((period: WinnerPeriod, index: number) => {
-                                        const periodLabel = formatPeriod(period.start_date, period.end_date);
+                                        const periodLabel = formatPeriod(period.period.start_date, period.period.end_date);
 
                                         return (
                                             <article
