@@ -1,7 +1,9 @@
 import { NavLink } from 'react-router-dom';
 import BorderIcon from '../assets/img/svg/border.svg';
 import BorderBigIcon from '../assets/img/svg/border-big.svg';
-import { useState, useRef } from 'react';
+import CloseIcon from '../assets/img/svg/close.svg';
+import CheckIcon from '../assets/img/svg/check.svg';
+import { useState, useRef, useEffect } from 'react';
 import type { FormEvent, ChangeEvent } from 'react';
 import SEO from '../components/SEO';
 import codesService from '../services/codes.service';
@@ -13,7 +15,58 @@ const PromotionalCode = () => {
     const [error, setError] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [successMessage, setSuccessMessage] = useState('');
+    const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
     const inputRef = useRef<HTMLInputElement>(null);
+    const successModalRef = useRef<HTMLDivElement>(null);
+    const closeButtonRef = useRef<HTMLButtonElement>(null);
+
+    // Handler para cerrar modal de éxito
+    const handleCloseSuccessModal = () => {
+        setIsSuccessModalOpen(false);
+        inputRef.current?.focus();
+    };
+
+    // Trap de foco en el modal - WCAG 2.4.3
+    useEffect(() => {
+        if (!isSuccessModalOpen || !successModalRef.current) return;
+
+        const focusableElements = successModalRef.current.querySelectorAll(
+            'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        );
+        const firstElement = focusableElements[0] as HTMLElement;
+        const lastElement = focusableElements[focusableElements.length - 1] as HTMLElement;
+
+        const handleTabKey = (e: KeyboardEvent) => {
+            if (e.key !== 'Tab') return;
+
+            if (e.shiftKey) {
+                if (document.activeElement === firstElement) {
+                    lastElement?.focus();
+                    e.preventDefault();
+                }
+            } else {
+                if (document.activeElement === lastElement) {
+                    firstElement?.focus();
+                    e.preventDefault();
+                }
+            }
+        };
+
+        const handleEscape = (e: KeyboardEvent) => {
+            if (e.key === 'Escape') {
+                handleCloseSuccessModal();
+            }
+        };
+
+        document.addEventListener('keydown', handleTabKey);
+        document.addEventListener('keydown', handleEscape);
+        closeButtonRef.current?.focus();
+
+        return () => {
+            document.removeEventListener('keydown', handleTabKey);
+            document.removeEventListener('keydown', handleEscape);
+        };
+    }, [isSuccessModalOpen]);
 
     // Handler para cambio de input - WCAG 3.3.1
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -65,12 +118,13 @@ const PromotionalCode = () => {
             // Actualizar datos del usuario para reflejar el nuevo código
             await refreshUser();
 
-            // Mostrar mensaje de éxito
-            setSuccessMessage('¡Código promocional ingresado exitosamente!');
+            // Limpiar el formulario y mostrar modal de éxito
             setPromoCode('');
-            inputRef.current?.focus();
-        } catch (error: any) {
+            setIsSuccessModalOpen(true);
+        } catch (err: unknown) {
             // Manejar errores específicos
+            const error = err as { status?: number; errors?: Record<string, string[]> };
+
             if (error.status === 422 && error.errors) {
                 // Error de validación
                 const firstError = Object.values(error.errors)[0];
@@ -222,6 +276,80 @@ const PromotionalCode = () => {
                         </NavLink>
                     </section>
                 </div>
+
+                {/* Modal de éxito - WCAG 2.4.3, 4.1.2 */}
+                {isSuccessModalOpen && (
+                    <div
+                        role="alertdialog"
+                        aria-modal="true"
+                        aria-labelledby="success-modal-title"
+                        aria-describedby="success-modal-description"
+                        aria-live="assertive"
+                        className="modal-overlay"
+                        ref={successModalRef}
+                        onClick={(e) => {
+                            // Cerrar al hacer clic en el overlay
+                            if (e.target === e.currentTarget) {
+                                handleCloseSuccessModal();
+                            }
+                        }}
+                    >
+                        <div className="modal-content" role="document">
+                            {/* Botón de cerrar - WCAG 2.5.3 */}
+                            <button
+                                ref={closeButtonRef}
+                                onClick={handleCloseSuccessModal}
+                                type="button"
+                                aria-label="Cerrar modal de código exitoso"
+                                className="modal-close-button"
+                                autoFocus
+                            >
+                                <img
+                                    src={CloseIcon}
+                                    alt=""
+                                    aria-hidden="true"
+                                    role="presentation"
+                                />
+                                <span className="visually-hidden">Cerrar</span>
+                            </button>
+
+                            {/* Icono de éxito - WCAG 1.1.1 */}
+                            <img
+                                src={CheckIcon}
+                                alt="Icono de éxito"
+                                role="img"
+                                aria-label="Código ingresado exitosamente"
+                                className='icon'
+                            />
+
+                            {/* Título - WCAG 2.4.6 */}
+                            <h2 id="success-modal-title" style={{
+                                textAlign: "center"
+                            }}>
+                                ¡CÓDIGO INGRESADO!
+                            </h2>
+
+                            {/* Mensaje importante */}
+                            <p id="success-modal-description" className="modal-important-message">
+                                <strong>Recordá guardar tu empaque para reclamar el premio</strong>
+                            </p>
+
+                            {/* Descripción adicional para lectores de pantalla - WCAG 1.3.1 */}
+                            <p className="visually-hidden">
+                                Tu código promocional ha sido ingresado exitosamente. Es importante que conserves el empaque del producto para poder reclamar tu premio en caso de resultar ganador.
+                            </p>
+
+                            {/* Botón de acción - WCAG 2.5.3 */}
+                            <button
+                                onClick={handleCloseSuccessModal}
+                                aria-label="Cerrar modal y continuar"
+                                className='btn-code'
+                            >
+                                Continuar
+                            </button>
+                        </div>
+                    </div>
+                )}
             </main>
         </>
     );

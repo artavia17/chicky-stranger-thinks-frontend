@@ -125,6 +125,7 @@ export interface Winner {
         iso_code: string;
     };
     prize: string;
+    code: string;
     notes: string | null;
 }
 

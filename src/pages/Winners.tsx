@@ -226,25 +226,41 @@ const Winners = () => {
                                                         {periodLabel}
                                                     </p>
 
-                                                    {/* Lista de ganadores - WCAG 1.3.1 */}
-                                                    <ul
-                                                        id={`winners-list-${index}`}
-                                                        role="list"
-                                                        aria-label={`Ganadores del período ${periodLabel}`}
-                                                        className='expanded'
-                                                    >
-                                                        {period.winners.map((winner, wIndex) => (
-                                                            <li
-                                                                key={winner.id}
-                                                                role="listitem"
-                                                            >
-                                                                <strong>Ganador {wIndex + 1}</strong>{' '}
-                                                                <p>
-                                                                    <span className="winner-name">{winner.user.name}</span>
-                                                                </p>
-                                                            </li>
-                                                        ))}
-                                                    </ul>
+                                                    {/* Tabla de ganadores - WCAG 1.3.1 */}
+                                                    <div className="winners-table-wrapper">
+                                                        <table
+                                                            className="winners-table"
+                                                            role="table"
+                                                            aria-label={`Ganadores del período ${periodLabel}`}
+                                                        >
+                                                            <thead>
+                                                                <tr role="row">
+                                                                    <th scope="col" role="columnheader">Ganador</th>
+                                                                    <th scope="col" role="columnheader">Nombre</th>
+                                                                    <th scope="col" role="columnheader">Premio</th>
+                                                                    <th scope="col" role="columnheader">Código</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                {period.winners.map((winner, wIndex) => (
+                                                                    <tr key={winner.id} role="row">
+                                                                        <td role="cell" data-label="Ganador">
+                                                                            <strong>Ganador {wIndex + 1}</strong>
+                                                                        </td>
+                                                                        <td role="cell" data-label="Nombre">
+                                                                            {winner.user.name}
+                                                                        </td>
+                                                                        <td role="cell" data-label="Premio">
+                                                                            {winner.prize}
+                                                                        </td>
+                                                                        <td role="cell" data-label="Código">
+                                                                            {winner.code}
+                                                                        </td>
+                                                                    </tr>
+                                                                ))}
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
                                                 </div>
                                             </article>
                                         );

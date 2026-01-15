@@ -5,25 +5,153 @@
         padding-bottom: rem(30px);
         margin-bottom: rem(30px);
 
-        @include bp(laptop){
-            
-        }
-
         &:last-of-type{
             border-bottom: none;
         }
 
-        div{
+        > div{
             @include bp(laptop){
                 display: flex;
                 gap: rem(25px);
             }
 
             .title{
-                margin-bottom: rem(10px);
+                margin-bottom: rem(20px);
 
                 @include bp(laptop){
                     width: rem(250px);
+                    margin-bottom: 0;
+                }
+            }
+
+            // Tabla de ganadores
+            .winners-table-wrapper{
+                width: 100%;
+                overflow-x: auto;
+
+                @include bp(laptop){
+                    flex: 1;
+                }
+            }
+
+            .winners-table{
+                width: 100%;
+                border-collapse: collapse;
+                color: $text-color;
+                font-family: $font-medium;
+                font-size: rem(14px);
+
+                @include bp(laptop){
+                    font-size: rem(16px);
+                }
+
+                // Encabezados de tabla
+                thead{
+                    tr{
+                        background-color: rgba(255, 255, 255, 0.1);
+                        border-bottom: 2px solid $text-color;
+                    }
+
+                    th{
+                        padding: rem(12px) rem(8px);
+                        text-align: left;
+                        font-family: $font-bold;
+                        font-weight: normal;
+                        white-space: nowrap;
+
+                        @include bp(laptop){
+                            padding: rem(15px) rem(12px);
+                        }
+
+                        &:first-child{
+                            width: rem(100px);
+                        }
+
+                        &:nth-child(2){
+                            width: auto;
+                            min-width: rem(200px);
+                        }
+
+                        &:nth-child(3){
+                            width: rem(120px);
+                        }
+
+                        &:nth-child(4){
+                            width: rem(150px);
+                        }
+                    }
+                }
+
+                // Filas de datos
+                tbody{
+                    tr{
+                        border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+
+                        &:last-child{
+                            border-bottom: none;
+                        }
+
+                        &:hover{
+                            background-color: rgba(255, 255, 255, 0.05);
+                        }
+                    }
+
+                    td{
+                        padding: rem(12px) rem(8px);
+                        vertical-align: middle;
+
+                        @include bp(laptop){
+                            padding: rem(15px) rem(12px);
+                        }
+
+                        strong{
+                            font-family: $font-bold;
+                        }
+
+                        // Etiquetas para mobile (responsive)
+                        &::before{
+                            content: attr(data-label);
+                            display: none;
+                            font-family: $font-bold;
+                            margin-right: rem(10px);
+                        }
+                    }
+                }
+
+                // Diseño responsive para móviles
+                @media (max-width: 767px){
+                    thead{
+                        display: none;
+                    }
+
+                    tbody{
+                        tr{
+                            display: block;
+                            margin-bottom: rem(20px);
+                            border: 1px solid rgba(255, 255, 255, 0.2);
+                            border-radius: rem(8px);
+                            padding: rem(10px);
+                            background-color: rgba(255, 255, 255, 0.05);
+                        }
+
+                        td{
+                            display: block;
+                            text-align: left;
+                            padding: rem(8px) rem(10px);
+                            border: none;
+
+                            &::before{
+                                display: inline-block;
+                                width: rem(100px);
+                            }
+
+                            &:first-child{
+                                border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+                                padding-bottom: rem(12px);
+                                margin-bottom: rem(8px);
+                            }
+                        }
+                    }
                 }
             }
 
@@ -56,6 +184,32 @@
                 width: auto;
                 margin: auto;
                 padding: rem(13px) rem(30px) rem(10px) rem(30px);
+            }
+        }
+    }
+
+    .change-country-section{
+        text-align: center;
+        margin-bottom: rem(30px);
+
+        button{
+            margin: 0 auto;
+        }
+    }
+
+    .no-winners-message,
+    .loading-message{
+        text-align: center;
+        padding: rem(40px) rem(20px);
+        color: $text-color;
+        font-family: $font-medium;
+
+        p{
+            margin-bottom: rem(10px);
+            font-size: rem(16px);
+
+            &:last-child{
+                margin-bottom: 0;
             }
         }
     }
