@@ -311,10 +311,10 @@ const Winners = () => {
                                     ref={countrySelectRef}
                                     id="country-select"
                                     name="country"
-                                    value={selectedCountry?.id || ''}
+                                    value={selectedCountry?.name.replace(/\s+/g, '_') || ''}
                                     onChange={(e) => {
-                                        const countryId = parseInt(e.target.value);
-                                        const country = countries.find(c => c.id === countryId);
+                                        const countryName = e.target.value.replace(/_/g, ' ');
+                                        const country = countries.find(c => c.name === countryName);
                                         setSelectedCountry(country || null);
                                     }}
                                     required
@@ -327,7 +327,7 @@ const Winners = () => {
                                         {isLoadingCountries ? 'Cargando países...' : 'Seleccione un país'}
                                     </option>
                                     {countries && countries.length > 0 && countries.map((country) => (
-                                        <option key={country.id} value={country.id}>
+                                        <option key={country.id} value={country.name.replace(/\s+/g, '_')}>
                                             {country.name}
                                         </option>
                                     ))}

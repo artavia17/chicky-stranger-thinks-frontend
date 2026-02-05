@@ -80,8 +80,8 @@ const RegisterForm = () => {
 
     // Handler para cambio de país
     const handleCountryChange = (e: ChangeEvent<HTMLSelectElement>) => {
-        const countryId = parseInt(e.target.value);
-        const country = countries.find(c => c.id === countryId);
+        const countryName = e.target.value.replace(/_/g, ' ');
+        const country = countries.find(c => c.name === countryName);
 
         setSelectedCountry(country || null);
 
@@ -229,6 +229,7 @@ const RegisterForm = () => {
             name: formData.get('fullname') as string,
             email: formData.get('email') as string,
             country_id: selectedCountry?.id || 0,
+            country: selectedCountry?.name.replace(/\s+/g, '_') || '',
             id_type: identificationType === 'na' ? 'Cédula' : identificationType === 'passport' ? 'Pasaporte' : 'Otro',
             id_number: identificationNumber,
             phone_number: phoneDigitsOnly,
@@ -338,7 +339,7 @@ const RegisterForm = () => {
                                 {isLoadingCountries ? 'Cargando países...' : 'Seleccione una opción'}
                             </option>
                             {countries && countries.length > 0 && countries.map((country) => (
-                                <option key={country.id} value={country.id}>
+                                <option key={country.id} value={country.name.replace(/\s+/g, '_')}>
                                     {country.name}
                                 </option>
                             ))}
