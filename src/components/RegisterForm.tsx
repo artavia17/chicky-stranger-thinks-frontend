@@ -8,6 +8,13 @@ import authService from '../services/auth.service';
 import { useAuth } from '../context/AuthContext';
 import type { Country } from '../types/api';
 
+// Declarar dataLayer para TypeScript
+declare global {
+    interface Window {
+        dataLayer: Array<Record<string, unknown>>;
+    }
+}
+
 const RegisterForm = () => {
     const navigate = useNavigate();
     const { login } = useAuth();
@@ -84,6 +91,27 @@ const RegisterForm = () => {
         const country = countries.find(c => c.name === countryName);
 
         setSelectedCountry(country || null);
+
+        // Enviar evento al data layer de Google Tag Manager
+        if (country) {
+            // Asegurar que dataLayer existe
+            window.dataLayer = window.dataLayer || [];
+
+            // Push del evento al data layer con el nombre del país
+            window.dataLayer.push({
+                event: 'country_selected',
+                country_name: country.name,
+                country_id: country.id,
+                country_iso_code: country.iso_code
+            });
+
+            console.log('Data Layer Event:', {
+                event: 'country_selected',
+                country_name: country.name,
+                country_id: country.id,
+                country_iso_code: country.iso_code
+            });
+        }
 
         // Resetear campos cuando cambia el país
         if (country) {
