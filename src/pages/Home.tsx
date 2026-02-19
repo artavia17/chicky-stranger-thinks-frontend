@@ -206,6 +206,7 @@ const Home = () => {
             href="#register"
             aria-label="Ir a la página de registro de usuario"
             className="btn-code"
+            id="registrate-page"
           >
               <span>
                 Registrate

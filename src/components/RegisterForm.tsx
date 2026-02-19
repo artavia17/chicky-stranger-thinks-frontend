@@ -668,6 +668,7 @@ const RegisterForm = () => {
                     aria-label="Enviar formulario de registro"
                     className='btn-code'
                     disabled={isSubmitting}
+                    id="registrate-button"
                 >
                     {isSubmitting ? 'Registrando...' : 'Registrate'}
                 </button>
@@ -733,6 +734,7 @@ const RegisterForm = () => {
                             onClick={handleCloseSuccessModal}
                             aria-label="Ir a la página para ingresar códigos promocionales"
                             className='btn-code'
+                            id='continuar-button'
                         >
                             Continuar
                         </button>

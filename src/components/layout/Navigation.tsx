@@ -247,6 +247,7 @@ const Navigation = () => {
                 to="/registrate"
                 onClick={handleNavigation}
                 aria-label="Ir a página de registro"
+                id="registrate-page"
               >
                 {({ isActive }) => (
                   <span aria-current={isActive ? 'page' : undefined}>
